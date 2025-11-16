@@ -1,0 +1,26 @@
+.vertical_mask_animation {
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+
+  /* Make the mask taller than the element so we can scroll it */
+  mask-size: 100% 200%;
+  mask-position: 0% 0%;
+  mask-repeat: repeat-y;
+
+  animation: slideMask 1500ms linear infinite;
+}
+
+@keyframes slideMask {
+  from {
+    mask-position: 0% 0%;
+  }
+  to {
+    /* move exactly one full cycle so start == end */
+    mask-position: 0% 200%;
+  }
+}

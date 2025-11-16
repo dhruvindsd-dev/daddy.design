@@ -1,0 +1,310 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  /* --bg: #f0f0f0; */
+  /* --fg: #171717; */
+  --radius: 0.625rem;
+  --background: 0 0% 94%;
+  --foreground: 0 0% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 9%;
+  --primary: 0 0% 14%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 13%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 13%;
+  --destructive: 12 76% 50%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 0 0% 64%;
+  --chart-1: 35 91% 56%;
+  --chart-2: 192 82% 56%;
+  --chart-3: 221 83% 36%;
+  --chart-4: 64 94% 79%;
+  --chart-5: 54 92% 72%;
+  --sidebar: 0 0% 98%;
+  --sidebar-foreground: 0 0% 9%;
+  --sidebar-primary: 0 0% 13%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 96%;
+  --sidebar-accent-foreground: 0 0% 13%;
+  --sidebar-border: 0 0% 90%;
+  --sidebar-ring: 0 0% 64%;
+
+  --sh-class: #e45649; /* Red-ish: Used for class names */
+  --sh-identifier: #383a42; /* Base text for variables/identifiers */
+  --sh-sign: #0184bc; /* Blue: Operators and punctuation */
+  --sh-property: #986801; /* Brown/gold for object properties */
+  --sh-entity: #a626a4; /* Magenta: Entities, tags */
+  --sh-jsxliterals: #50a14f; /* Green: JSX and embedded code */
+  --sh-string: #50a14f; /* Green: Strings */
+  --sh-keyword: #a626a4; /* Magenta: Language keywords */
+  --sh-comment: #a0a1a7; /* Gray: Subtle comment color */
+
+  /* Design system */
+  --ds-bg-100: 0 0% 100%;
+  --ds-bg-200: 0 0% 94%;
+  --ds-border: 0 0% 85%;
+
+  --ds-text-1: 0 0% 19%;
+  --ds-text-2: 0 0% 38%;
+  --ds-text-3: 0 0% 56%; /* for lighter elements like sidebars */
+  --ds-text-disabled: 0 0% 75%;
+
+  --ds-primary: 0 0% 20%;
+  --ds-primary-hover: 0 0% 28%;
+  --ds-primary-active: 0 0% 36%;
+  --ds-primary-shadow: 0 0% 60%;
+
+  --ds-primary-text: 0 0% 100%;
+  --ds-primary-text-disabled: 0 0% 60%;
+
+  --ds-primary-light: 0 0% 100%;
+  --ds-primary-light-hover: 0 0% 96%;
+  --ds-primary-light-active: 0 0% 90%;
+  --ds-primary-light-shadow: 0 0% 80%;
+
+  --ds-primary-light-text: 0 0% 0%;
+  --ds-primary-light-text-disabled: 0 0% 60%;
+}
+
+@theme inline {
+  --color-fg: var(--fg);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-border: hsl(var(--border));
+  --color-destructive: hsl(var(--destructive));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card: hsl(var(--card));
+  --color-foreground: hsl(var(--foreground));
+  --color-background: hsl(var(--background));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Design system */
+  --color-ds-bg-100: hsl(var(--ds-bg-100));
+  --color-ds-bg-200: hsl(var(--ds-bg-200));
+  --color-ds-border: hsl(var(--ds-border));
+
+  --color-ds-text-1: hsl(var(--ds-text-1));
+  --color-ds-text-2: hsl(var(--ds-text-2));
+  --color-ds-text-3: hsl(var(--ds-text-3));
+  --color-ds-text-disabled: hsl(var(--ds-text-disabled));
+
+  --color-ds-primary: hsl(var(--ds-primary));
+  --color-ds-primary-hover: hsl(var(--ds-primary-hover));
+  --color-ds-primary-active: hsl(var(--ds-primary-active));
+  --color-ds-primary-shadow: hsl(var(--ds-primary-shadow));
+  --color-ds-primary-text: hsl(var(--ds-primary-text));
+  --color-ds-primary-text-disabled: hsl(var(--ds-primary-text-disabled));
+
+  --color-ds-primary-light: hsl(var(--ds-primary-light));
+  --color-ds-primary-light-hover: hsl(var(--ds-primary-light-hover));
+  --color-ds-primary-light-active: hsl(var(--ds-primary-light-active));
+  --color-ds-primary-light-shadow: hsl(var(--ds-primary-light-shadow));
+  --color-ds-primary-light-text: hsl(var(--ds-primary-light-text));
+  --color-ds-primary-light-text-disabled: hsl(
+    var(--ds-primary-light-text-disabled)
+  );
+}
+
+body {
+  background: hsl(var(--ds-bg-200));
+  color: hsl(var(--ds-text-1));
+  font-family: var(--font-sans);
+
+  hr {
+    @apply border-ds-border!;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring) / 0.5);
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+@utility steps {
+  counter-reset: step-counter;
+  margin-left: 48px;
+  position: relative;
+}
+
+@utility step-line {
+  @apply bg-ds-border;
+  position: absolute;
+  left: -32px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+@utility step {
+  position: relative;
+  counter-increment: step-counter;
+  --offset: 16px;
+
+  &:after {
+    /* gap overlays on the line */
+    @apply bg-ds-bg-200;
+    content: "";
+    position: absolute;
+    width: 32px;
+    left: -48px;
+
+    height: calc(100% + var(--offset) * 2);
+    top: calc(-1 * var(--offset));
+  }
+
+  &:before {
+    @apply border-ds-border bg-ds-bg-100 text-ds-text-3 border font-bold;
+    z-index: 1;
+    content: counter(step-counter);
+    position: absolute;
+    left: -48px;
+    height: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+}
+
+@utility code {
+  @apply text-black/80;
+  pre {
+    @apply font-mono text-sm font-semibold;
+    span {
+    }
+  }
+}
+
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility loading {
+  @apply flex min-h-60 items-center justify-center;
+}
+
+@supports (animation-timeline: scroll()) {
+  @property --ft {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px;
+  }
+  @property --fb {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 40px;
+  }
+
+  .scroll-fade-y {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--ft),
+      #000 calc(100% - var(--fb)),
+      transparent 100%
+    );
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    animation:
+      t 1 linear both,
+      b 1 linear both;
+    animation-timeline: scroll(self), scroll(self);
+    animation-range:
+      0% 2%,
+      98% 100%;
+  }
+
+  @keyframes t {
+    from {
+      --ft: 0px;
+    }
+    to {
+      --ft: 40px;
+    }
+  }
+
+  @keyframes b {
+    from {
+      --fb: 40px;
+    }
+    to {
+      --fb: 0px;
+    }
+  }
+}
+
+@utility table {
+  @apply outline-ds-border w-max overflow-hidden rounded-xl text-sm outline sm:w-full;
+
+  th,
+  td {
+    @apply border-r-ds-border border-r px-3 py-3 text-left text-xs last:border-r-0;
+  }
+
+  th {
+    @apply border-b-ds-border border-b py-4 font-semibold;
+  }
+
+  td {
+    @apply font-medium;
+  }
+
+  code {
+    @apply outline-ds-border text-ds-text-1 rounded-[4px] px-1 py-0.5 font-mono text-xs leading-[1]! font-medium tracking-tight outline;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  tr {
+    @apply border-t-ds-border border-t first:border-t-0;
+  }
+}

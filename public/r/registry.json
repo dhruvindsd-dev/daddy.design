@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "Daddy Design",
+  "homepage": "https://daddy.design",
+  "items": [
+    {
+      "name": "family-button",
+      "type": "registry:component",
+      "title": "Family status indicator",
+      "description": "Family like dynamic status indicator",
+      "dependencies": ["motion", "react-icons"],
+      "files": [
+        {
+          "path": "src/registry/family-button/index.tsx",
+          "type": "registry:component",
+          "target": "components/ui/family-button/index.tsx"
+        }
+      ],
+      "author": "Dhruvin D.<dhruvinddev@gmail.com>"
+    }
+  ]
+}
