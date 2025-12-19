@@ -10,10 +10,10 @@ const TABS = [
   { name: "Loading", value: "loading" },
   { name: "Success", value: "success" },
   { name: "Error", value: "error" },
-];
+] as const;
 
 const FamilyButtonDemo = () => {
-  const [tab, setTab] = useState(TABS[0]);
+  const [tab, setTab] = useState<(typeof TABS)[number]>(TABS[0]);
 
   const handleNext = () => {
     setTab((prev) => {
@@ -35,7 +35,7 @@ const FamilyButtonDemo = () => {
     <div className="relative flex min-h-[400px] flex-col items-center justify-center gap-14 py-8">
       <FamilyButton
         icon={<TbPlus strokeWidth={3.2} />}
-        variant={tab.value }
+        variant={tab.value}
         onClick={handleNext}
       >
         Submit

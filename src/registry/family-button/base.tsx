@@ -1,23 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import FamilyButton from ".";
-import { TabItem } from "@/components/ui/tabs";
 
-const TABS: TabItem[] = [
+const TABS = [
   { name: "Success", value: "success" },
   { name: "Error", value: "error" },
   { name: "Loading", value: "loading" },
-];
+] as const;
 
 const FamilyButtonBase = () => {
-  const [tab, setTab] = useState(TABS[0]);
+  const [tab, setTab] = useState<(typeof TABS)[number]>(TABS[0]);
 
   const handleNext = () => {
-    setTab((prev) => {
-      const currentIndex = TABS.findIndex((tab) => tab.value === prev.value);
-      const nextIndex = (currentIndex + 1) % TABS.length;
-      return TABS[nextIndex];
-    });
+    const currentIndex = TABS.findIndex((i) => i.value === tab.value);
+    const nextIndex = (currentIndex + 1) % TABS.length;
+    setTab(TABS[nextIndex]);
   };
 
   useEffect(() => {

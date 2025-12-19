@@ -9,12 +9,12 @@ const clamp = (value: number, min: number, max: number) =>
 
 const MorphingDragSquare: React.FC = () => {
   const scaleX = useSpring(1, {
-    stiffness: 420,
+    stiffness: 520,
     damping: 10,
   });
 
   const scaleY = useSpring(1, {
-    stiffness: 420,
+    stiffness: 520,
     damping: 10,
   });
 
@@ -70,13 +70,14 @@ const MorphingDragSquare: React.FC = () => {
 
   return (
     <div className="bg-background flex h-screen w-screen items-center justify-center">
-      <motion.div
-        {...dragProps}
-        style={{ scaleX, scaleY, borderRadius: 5000 }}
-        className="h-32 w-32 cursor-grab touch-none bg-black/20 shadow-xl active:cursor-grabbing flex items-center justify-center"
-      >
-        <Icon name="CLI" className="text-black/60 size-20" />
-      </motion.div>
+      <div {...dragProps}>
+        <motion.div
+          style={{ scaleX, scaleY, borderRadius: 5000 }}
+          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
+        >
+          <Icon name="CLI" className="size-20 text-black/60" />
+        </motion.div>
+      </div>
     </div>
   );
 };
