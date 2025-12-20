@@ -26,7 +26,7 @@ export interface TabsItem<T extends string | number = string | number> {
 interface TabsProps<T extends string | number> {
   items: TabsItem<T>[];
   value: TabsItem<T>;
-  setValue: React.Dispatch<React.SetStateAction<TabsItem<T>>>;
+  setValue: (val: TabsItem<T>) => void;
 
   size?: "default" | "lg";
   variant?: "default" | "light";

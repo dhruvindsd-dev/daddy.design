@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import FamilyButton from ".";
-import Tabs from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { TbPlus } from "react-icons/tb";
+import useDurationStore from "@/stores/duration-store";
 
 const TABS = [
   { name: "Normal", value: undefined },
@@ -13,14 +13,9 @@ const TABS = [
   { name: "Error", value: "error" },
 ] as const;
 
-const DURATIONS = [
-  { value: 1, label: "1x" },
-  { value: 0.5, label: "0.5x" },
-];
-
 const FamilyButtonDemo = () => {
   const [tab, setTab] = useState<(typeof TABS)[number]>(TABS[0]);
-  const [dur, setDur] = useState(DURATIONS[0]);
+  const { duration } = useDurationStore();
 
   const handleNext = () => {
     const currentIndex = TABS.findIndex((i) => i.value === tab.value);
@@ -38,14 +33,12 @@ const FamilyButtonDemo = () => {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex-col absolute top-12 right-12 flex gap-3">
-        <Tabs items={DURATIONS} value={dur} setValue={setDur} />
-      </div>
       <div className="relative flex min-h-[400px] flex-col items-center justify-center gap-14 py-8">
         <FamilyButton
           icon={<TbPlus strokeWidth={3.2} />}
           variant={tab.value}
           onClick={handleNext}
+          transition={{ type: "spring", duration: 0.6 * duration, bounce: 0.3 }}
         >
           Submit
         </FamilyButton>
@@ -55,13 +48,13 @@ const FamilyButtonDemo = () => {
             <button
               onClick={() => setTab(i)}
               className={cn(
-                "relative flex flex-1 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full border border-neutral-100 px-4 py-1 text-sm font-semibold transition-colors ",
+                "relative flex flex-1 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full border border-neutral-100 px-4 py-1 text-sm font-semibold transition-colors",
               )}
               key={i.name}
             >
               {tab.value === i.value && (
                 <motion.div
-                  className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-black/60"
+                  className="absolute inset-0 flex items-center justify-center bg-neutral-100 text-black/60"
                   initial={{ clipPath: "inset(0 100% 0 0)" }}
                   animate={{ clipPath: "inset(0 0% 0 0)" }}
                   transition={{ duration: 5 }}

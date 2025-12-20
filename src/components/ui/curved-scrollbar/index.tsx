@@ -303,11 +303,11 @@ const CurvedScroller = ({
 
           <motion.div
             style={{ opacity: tOpac }}
-            className="from-ds-bg-100 absolute inset-x-0 top-0 z-9 h-24 rounded-t-[12px] bg-linear-to-b to-transparent"
+            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 top-0 z-9 h-24 rounded-t-[12px] bg-linear-to-b to-transparent"
           />
           <motion.div
             style={{ opacity: bOpac }}
-            className="from-ds-bg-100 absolute inset-x-0 bottom-0 z-9 h-24 rounded-b-[12px] bg-linear-to-t to-transparent"
+            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 bottom-0 z-9 h-24 rounded-b-[12px] bg-linear-to-t to-transparent"
           />
         </div>
       </div>

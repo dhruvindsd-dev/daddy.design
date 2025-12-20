@@ -76,19 +76,17 @@ export default function CliInstall({ cmd: _cmd, isShadcn }: Props) {
         </div>
 
         <div className="absolute top-1/2 right-3 -translate-y-1/2">
-          <CopyButton />
+          <CopyButton value={cmd} />
         </div>
       </div>
 
       <div className="inset-sm border-t-ds-border relative overflow-hidden border-t p-3">
         <div className="hide-scrollbar border-ds-border bg-ds-bg-100 overflow-auto rounded-full border p-3.5">
           <div className="text-ds-text-2 flex w-fit items-center gap-2 font-mono text-sm leading-none font-semibold whitespace-nowrap">
-            <MotionConfig
-              transition={{ type: "spring", duration: 0.6, bounce: 0 }}
-            >
+            <MotionConfig transition={{ ease: "easeOut", duration: 0.4 }}>
               <Icon name="CLI" size={14} />
               <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div {...ani} key={tab.value} className="">
+                <motion.div {...ani} key={tab.value}>
                   {cmd}
                 </motion.div>
               </AnimatePresence>
@@ -102,7 +100,10 @@ export default function CliInstall({ cmd: _cmd, isShadcn }: Props) {
   );
 }
 
-function getCmd(url: string, isShadcn?: boolean): Record<string, string> {
+export function getCmd(
+  url: string,
+  isShadcn?: boolean,
+): Record<string, string> {
   if (isShadcn)
     return {
       npm: `npx shadcn@latest add ${url}`,

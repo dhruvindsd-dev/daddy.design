@@ -7,7 +7,7 @@ interface Props {
 export const Step = ({ children }: Props) => {
   return (
     <div className="step">
-      <h3 className="font-semibold tracking-tight">{children}</h3>
+      <h3 className="font-semibold ">{children}</h3>
     </div>
   );
 };

@@ -3,15 +3,24 @@ import useAudio from "@/hooks/use-audio";
 import usePress from "@/hooks/use-press";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
-import { motion, useMotionTemplate, useSpring, Variants } from "motion/react";
+import {
+    AnimatePresence,
+    motion,
+    useMotionTemplate,
+    useSpring,
+    Variants,
+} from "motion/react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import Icon from "../icon";
 
 interface Props {
   items: {
     icon: React.ReactNode;
     label: string;
+    kbd?: string;
     click?: () => void;
+    action?: "copy";
   }[];
   deps?: any[];
   dur?: {
@@ -47,6 +56,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   const [hover, setHover] = useState<Props["items"][number]>();
   const [jump, setJump] = useState(true);
   const [counter, setCounter] = useState(0);
+  const [copyState, setCopyState] = useState<"normal" | "copied">("normal");
 
   const tooltipContainerRef = useRef<HTMLDivElement>(null);
   const activeTooltipItemRef = useRef<HTMLDivElement>(null);
@@ -66,6 +76,15 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
 
     return () => tmt && clearTimeout(tmt);
   }, [d.hoverNormalze, hover?.label]);
+
+  useEffect(() => {
+    if (copyState === "normal") return;
+    const tmt = setTimeout(() => {
+      setCopyState("normal");
+    }, 2000);
+
+    return () => tmt && clearTimeout(tmt);
+  }, [copyState, counter]);
 
   useEffect(() => {
     if (!tooltipContainerRef.current || !activeTooltipItemRef.current) return;
@@ -110,6 +129,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
 
   function handleLeave() {
     setHover(undefined);
+    setCopyState("normal");
   }
 
   function handleClick() {
@@ -149,12 +169,18 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
               className={cn(
                 "text-ds-primary-text relative rounded-[10px] px-2.5 py-2 font-mono text-xs font-semibold whitespace-nowrap",
                 "origin-top transition-all duration-[var(--dpn)] ease-[ease]",
+                "flex items-center gap-2",
                 isActive &&
                   i.label === hover?.label &&
-                  "translate-y-[-4px]! scale-x-[0.90] scale-y-[1.05]! duration-[var(--dp)]!",
+                  "translate-y-[-4px]! scale-x-[0.95] scale-y-[1.1]! duration-[var(--dp)]!",
               )}
             >
-              {i.label}
+              {i.label}{" "}
+              {i.kbd && (
+                <span className="outline-ds-primary-light/40 flex size-4 items-center justify-center rounded-[4px] text-[10px] outline">
+                  {i.kbd}
+                </span>
+              )}
             </div>
           ))}
         </motion.div>
@@ -172,33 +198,60 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
         )}
       >
         <div className="group/wrapper flex w-fit items-center">
-          {items.map((i, idx) => (
-            <button
-              onClick={() => {
-                i.click?.();
-                setCounter((c) => c + 1);
-              }}
-              key={i.label}
-              ref={i.label === hover?.label ? activeMenuItemRef : null}
-              onMouseEnter={() => handleEnter(i)}
-              onFocus={() => handleEnter(i)}
-              onMouseLeave={handleLeave}
-              onBlur={handleLeave}
-              className={cn(
-                "group/icon text-ds-primary-text relative flex size-8 cursor-pointer items-center justify-center",
-                "group-hover/wrapper:text-ds-primary-text-disabled hover:bg-ds-primary-hover hover:text-ds-primary-text",
-                "transition-[color] duration-150 ease-[ease]",
-                "focus-visible:bg-ds-primary-hover focus-visible:ring-1 focus-visible:ring-white/30 focus-visible:outline-none",
-                "border-white/8 hover:border",
-                "rounded-[4px]",
-                idx === 0 && "rounded-l-2xl",
-                idx === items.length - 1 &&
-                  "rounded-r-2xl [&>*:first-child]:mr-0.5",
-              )}
-            >
-              {i.icon}
-            </button>
-          ))}
+          {items.map((i, idx) => {
+            const copied =
+              copyState === "copied" &&
+              i.label === hover?.label &&
+              i.action === "copy";
+            return (
+              <button
+                onClick={() => {
+                  i.click?.();
+                  setCounter((c) => c + 1);
+                  setCopyState("copied");
+                }}
+                key={i.label}
+                ref={i.label === hover?.label ? activeMenuItemRef : null}
+                onMouseEnter={() => handleEnter(i)}
+                onFocus={() => handleEnter(i)}
+                onMouseLeave={handleLeave}
+                onBlur={handleLeave}
+                className={cn(
+                  "group/icon text-ds-primary-text relative flex size-8 cursor-pointer items-center justify-center",
+                  "group-hover/wrapper:text-ds-primary-text-disabled hover:bg-ds-primary-hover hover:text-ds-primary-text",
+                  "transition-[color] duration-150 ease-[ease]",
+                  "focus-visible:bg-ds-primary-hover focus-visible:ring-1 focus-visible:ring-white/30 focus-visible:outline-none",
+                  "border-white/8 hover:border",
+                  "rounded-[4px]",
+                  idx === 0 && "rounded-l-2xl",
+                  idx === items.length - 1 &&
+                    "rounded-r-2xl [&>*:first-child]:mr-0.5",
+                )}
+              >
+                <motion.span
+                  animate={{
+                    opacity: !copied ? 1 : 0,
+                    scale: !copied ? 1 : 0.8,
+                    filter: !copied ? "blur(0px)" : "blur(4px)",
+                  }}
+                >
+                  {i.icon}
+                </motion.span>
+                <AnimatePresence initial={false} mode="popLayout">
+                  {copied && (
+                    <motion.span
+                      className="absolute inset-0 flex items-center justify-center gap-1"
+                      initial={{ opacity: 0, filter: "blur(4px)", scale: 0.9 }}
+                      animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+                      exit={{ opacity: 0, filter: "blur(4px)", scale: 0.9 }}
+                    >
+                      <Icon name="CHECK" size={14} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+            );
+          })}
         </div>
       </div>
     </motion.div>

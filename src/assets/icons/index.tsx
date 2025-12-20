@@ -13,6 +13,7 @@ import CHECK from "./check.svg";
 import CHEVRON_DOWN_DOUBE_MICRO from "./chevron-down-doube-micro.svg";
 import QUESTION from "./question.svg";
 import INFO_OUTLINE from "./info-outline.svg";
+import CIRCLE_ARROW_RIGHT from "./circle-arrow-right.svg";
 
 const ICONS = {
   CLI,
@@ -29,6 +30,7 @@ const ICONS = {
   CHEVRON_DOWN_DOUBE_MICRO,
   QUESTION,
   INFO_OUTLINE,
+  CIRCLE_ARROW_RIGHT,
 };
 export default ICONS;
 

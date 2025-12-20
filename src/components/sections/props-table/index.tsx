@@ -6,13 +6,15 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+export interface PropsTableData {
+  name: string;
+  type: string;
+  default_value: string;
+  description: string;
+}
+
 interface Props {
-  items: {
-    name: string;
-    type: string;
-    default_value: string;
-    description: string;
-  }[];
+  items: PropsTableData[];
   className?: string;
 }
 

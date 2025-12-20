@@ -142,9 +142,9 @@
 }
 
 body {
+  @apply font-sans;
   background: hsl(var(--ds-bg-200));
   color: hsl(var(--ds-text-1));
-  font-family: var(--font-sans);
 
   hr {
     @apply border-ds-border!;
@@ -212,15 +212,6 @@ body {
   }
 }
 
-@utility code {
-  @apply text-black/80;
-  pre {
-    @apply font-mono text-sm font-semibold;
-    span {
-    }
-  }
-}
-
 @utility hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -280,6 +271,12 @@ body {
       --fb: 0px;
     }
   }
+}
+
+@utility code {
+  @apply outline-ds-border text-ds-text-1 rounded-[4px] px-1 py-0.5 font-mono text-xs leading-[1]! font-medium outline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 @utility table {

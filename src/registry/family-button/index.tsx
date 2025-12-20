@@ -67,7 +67,7 @@ const FamilyButton = ({
   children,
   icon,
   className,
-  transition = { type: "spring", duration: 0.6, bounce: 0.4 },
+  transition = { type: "spring", duration: 0.6, bounce: 0.3 },
   ...rest
 }: ButtonProps & HTMLMotionProps<"button">) => {
   const text = {

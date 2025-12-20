@@ -12,7 +12,11 @@ import {
 } from "motion/react";
 import React, { useEffect, useState } from "react";
 
-const CopyButton = () => {
+interface Props {
+  value?: string;
+  elementId?: string;
+}
+const CopyButton = ({ value, elementId }: Props) => {
   const x = useSpring(1, { stiffness: 200, damping: 20 });
   const y = useSpring(1, { stiffness: 200, damping: 20 });
   const { play } = useAudio("/assets/click2.mp3");
@@ -36,8 +40,26 @@ const CopyButton = () => {
     y.set(0.4);
   }, 34);
 
+  function getCopyText() {
+    if (value) return value;
+    if (elementId) {
+      const ele = document.getElementById(elementId);
+      if (ele) return ele.textContent;
+    }
+    return "";
+  }
+
+  function handleCopy() {
+    if (!elementId && !value) return;
+    if (!navigator.clipboard || !window.isSecureContext) return;
+
+    const text = getCopyText();
+    return navigator.clipboard.writeText(text);
+  }
+
   const handlePress = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (tmt.current) clearTimeout(tmt.current);
+    handleCopy();
     setCounter((c) => c + 1);
     setState("copied");
     ani();
@@ -120,7 +142,7 @@ const CopyButton = () => {
                 initial={{ opacity: 0, filter: "blur(4px)", scale: 0.8 }}
                 animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
                 exit={{ opacity: 0, filter: "blur(4px)", scale: 0.8 }}
-                className="absolute inset-1 flex items-center justify-center rounded-full bg-ds-bg-100"
+                className="bg-ds-bg-100 absolute inset-1 flex items-center justify-center rounded-full"
               >
                 Copied!
               </motion.span>

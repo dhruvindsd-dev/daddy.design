@@ -31,18 +31,24 @@ const ComponentBg = () => {
           ref={ref}
           className="bg-ds-bg-100 border-ds-border/60 absolute inset-6 rounded-[32px] border"
         />
-        <div
+        <button
+          onClick={() =>
+            window.scrollTo({
+              top: window.innerHeight,
+              behavior: "smooth",
+            })
+          }
           className={cn(
             "text-ds-text-3 pointer-events-none flex items-center gap-1 text-xs font-medium tracking-tight select-none",
-            "absolute bottom-[66px] left-1/2 -translate-x-1/2",
+            "absolute bottom-[66px] left-1/2 -translate-x-1/2 cursor-pointer",
             classes.vertical_mask_animation,
           )}
         >
           Scroll for more info{" "}
-          <div>
+          <span>
             <Icon name="CHEVRON_DOWN_DOUBE_MICRO" size={8} />
-          </div>
-        </div>
+          </span>
+        </button>
       </motion.div>
     </div>
   );

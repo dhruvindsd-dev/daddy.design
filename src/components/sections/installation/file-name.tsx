@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import useAudio from "@/hooks/use-audio";
 import { cn, throttle } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, useSpring } from "motion/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useId } from "react";
 import { useState } from "react";
 
 interface Props {
@@ -23,6 +23,7 @@ const ANI: MotionProps = {
 };
 
 const FileName = ({ children, className }: Props) => {
+  const id = useId();
   const x = useSpring(1, { stiffness: 200, damping: 20 });
   const y = useSpring(1, { stiffness: 200, damping: 20 });
   const { play } = useAudio("/assets/click2.mp3");
@@ -47,6 +48,7 @@ const FileName = ({ children, className }: Props) => {
 
   const handlePress = () => {
     if (tmt.current) clearTimeout(tmt.current);
+    handleCopy();
     setCounter((c) => c + 1);
     setState("copied");
     ani();
@@ -55,6 +57,15 @@ const FileName = ({ children, className }: Props) => {
       y.set(1);
     }, 34);
   };
+
+  function handleCopy() {
+    if (!navigator.clipboard || !window.isSecureContext) return;
+
+    const ele = document.getElementById(id);
+    if (!ele) return;
+    const text = ele.textContent || "";
+    return navigator.clipboard.writeText(text);
+  }
 
   return (
     <button
@@ -72,7 +83,7 @@ const FileName = ({ children, className }: Props) => {
           className,
         )}
       >
-        {children}
+        <span id={id}>{children}</span>
         <div
           className={cn(
             "pointer-events-none absolute top-0 right-0 flex h-full items-center opacity-0 transition-opacity duration-300 group-hover/inline-code:opacity-100",

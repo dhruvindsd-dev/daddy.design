@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "$cliInstallschema": "https://ui.shadcn.com/schema/registry.json",
   "name": "Daddy Design",
   "homepage": "https://daddy-design-git-staging-dhruvindsddevs-projects.vercel.app",
   "items": [

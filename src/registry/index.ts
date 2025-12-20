@@ -7,6 +7,7 @@ export interface IComp {
   rText?: "top-black" | "bottom-black" | "top-white" | "bottom-white";
   aspect?: string;
   copyTargets?: { main?: string; demo?: string }; // by default we copy main -> index.tsx  & demo -> demo.tsx . But you can overide the defaults with this keys
+  packages?: string[];
   comp: {
     demo: any;
     base?: any;
@@ -34,6 +35,7 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     title: "Family status indicator",
     desc: "Family like dynamic status indicator",
     copyTargets: { demo: "copy.tsx" },
+    packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     comp: {
       demo: dynamic(() => import("@/registry/family-button/demo")),
       base: dynamic(() => import("@/registry/family-button/base")),
