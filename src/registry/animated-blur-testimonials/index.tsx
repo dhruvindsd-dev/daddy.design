@@ -79,6 +79,10 @@ function AnimatedBlurTestimonials({
                 style={{ WebkitMaskImage: mask, maskImage: mask }}
                 className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-full first:mask-none!"
                 animate={{ opacity: count === idx ? 1 : 0.4 }}
+                whileHover={{
+                  opacity: count === idx ? 1 : 0.6,
+                  transition: { duration: 0 },
+                }}
                 initial={false}
               >
                 {i.avatar.src ? (

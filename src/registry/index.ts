@@ -2,15 +2,19 @@ import dynamic from "next/dynamic";
 
 export interface IComp {
   slug: COMPS;
-  title: string;
-  desc: string;
-  rText?: "top-black" | "bottom-black" | "top-white" | "bottom-white";
-  aspect?: string;
   copyTargets?: { main?: string; demo?: string }; // by default we copy main -> index.tsx  & demo -> demo.tsx . But you can overide the defaults with this keys
   packages?: string[];
   comp: {
     demo: any;
   };
+}
+
+export interface CompMeta {
+  slug: COMPS;
+  title: string;
+  desc: string;
+  rText?: "top-black" | "bottom-black" | "top-white" | "bottom-white";
+  aspect?: string;
 }
 
 export enum COMPS {
@@ -31,8 +35,6 @@ export const COMP_LIST = Object.keys(COMPS);
 export const COMP_DATA: Record<COMPS, IComp> = {
   [COMPS.FAMILY_BUTTON]: {
     slug: COMPS.FAMILY_BUTTON,
-    title: "Family status indicator",
-    desc: "Family like dynamic status indicator",
     copyTargets: { demo: "demo-copy.tsx" },
     packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     comp: {
@@ -41,13 +43,24 @@ export const COMP_DATA: Record<COMPS, IComp> = {
   },
   [COMPS.ANIMATED_BLUR_TESTIMONIALS]: {
     slug: COMPS.ANIMATED_BLUR_TESTIMONIALS,
-    title: "Animated Testimonials",
-    desc: "A sexy testimonial component with smooth blur animations.",
-    rText: "bottom-black",
     packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     copyTargets: { demo: "demo-copy.tsx" },
     comp: {
       demo: dynamic(() => import("@/registry/animated-blur-testimonials/demo")),
     },
+  },
+};
+
+export const COMP_METADATA: Record<COMPS, CompMeta> = {
+  [COMPS.FAMILY_BUTTON]: {
+    slug: COMPS.FAMILY_BUTTON,
+    title: "Family status indicator",
+    desc: "Family like dynamic status indicator",
+  },
+  [COMPS.ANIMATED_BLUR_TESTIMONIALS]: {
+    slug: COMPS.ANIMATED_BLUR_TESTIMONIALS,
+    title: "Animated Testimonials",
+    desc: "A sexy testimonial component with smooth blur animations.",
+    rText: "bottom-black",
   },
 };

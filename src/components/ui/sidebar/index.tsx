@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
+import { COMP_METADATA } from "@/registry";
 import useControlsStore from "@/stores/controls-store";
 import {
     AnimatePresence,
@@ -9,6 +10,8 @@ import {
     MotionProps,
 } from "motion/react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface Props {}
 
@@ -73,6 +76,10 @@ const ANI: MotionProps = {
 
 const Sidebar = ({}: Props) => {
   const { sidebar_visible } = useControlsStore();
+  const path = usePathname();
+
+  const activeComp = path.split("/").pop();
+  const data = Object.values(COMP_METADATA);
   return (
     <div className="fixed top-1/2 left-12 z-1000000 flex -translate-y-1/2 flex-col gap-8">
       <motion.div {...FADE_IN_ANI}>
@@ -85,17 +92,24 @@ const Sidebar = ({}: Props) => {
                 className="origin-left will-change-transform"
                 {...ANI}
               >
-                <div className="hide-scrollbar scroll-fade-y max-h-[430px] overflow-auto">
+                <div
+                  className={cn(
+                    "hide-scrollbar max-h-[430px] overflow-auto",
+                    data.length > 8 && "scroll-fade-y",
+                  )}
+                >
                   <div className="flex flex-col items-start gap-1.5">
-                    {DATA.map((i, idx) => (
-                      <button
+                    {data.map((i, idx) => (
+                      <Link
                         key={idx}
+                        href={`/components/${i.slug}`}
                         className={cn(
-                          "text-ds-text-disabled hover:text-ds-text-3 cursor-pointer text-sm font-medium tracking-tight transition-colors duration-100",
+                          "text-ds-text-disabled hover:text-ds-text-3 cursor-pointer text-sm font-medium transition-colors duration-100",
+                          i.slug === activeComp && "text-ds-text-2",
                         )}
                       >
-                        {i}
-                      </button>
+                        {i.title}
+                      </Link>
                     ))}
                   </div>
                 </div>
