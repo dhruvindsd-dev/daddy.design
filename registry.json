@@ -17,6 +17,22 @@
         }
       ],
       "author": "Dhruvin D.<dhruvinddev@gmail.com>"
+    },
+    {
+      "name": "family-button-demo",
+      "type": "registry:component",
+      "title": "Family status indicator Demo",
+      "description": "Family like dynamic status indicator",
+      "dependencies": ["motion", "react-icons"],
+      "registryDependencies": ["family-button"],
+      "files": [
+        {
+          "path": "src/registry/family-button/demo.tsx",
+          "type": "registry:component",
+          "target": "components/ui/family-button/demo.tsx"
+        }
+      ],
+      "author": "Dhruvin D.<dhruvinddev@gmail.com>"
     }
   ]
 }

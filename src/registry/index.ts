@@ -10,13 +10,12 @@ export interface IComp {
   packages?: string[];
   comp: {
     demo: any;
-    base?: any;
   };
 }
 
 export enum COMPS {
   FAMILY_BUTTON = "family-button",
-  // ANIMATED_BLUR_TESTIMONIALS = "animated-blur-testimonials",
+  ANIMATED_BLUR_TESTIMONIALS = "animated-blur-testimonials",
   // SPLASH_3D_BUTTON = "3d-splash-button",
   // DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
   // NATIVE_SWIPEABLE_SHEETS = "native-swipeable-sheets",
@@ -34,11 +33,21 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     slug: COMPS.FAMILY_BUTTON,
     title: "Family status indicator",
     desc: "Family like dynamic status indicator",
-    copyTargets: { demo: "copy.tsx" },
+    copyTargets: { demo: "demo-copy.tsx" },
     packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     comp: {
       demo: dynamic(() => import("@/registry/family-button/demo")),
-      base: dynamic(() => import("@/registry/family-button/base")),
+    },
+  },
+  [COMPS.ANIMATED_BLUR_TESTIMONIALS]: {
+    slug: COMPS.ANIMATED_BLUR_TESTIMONIALS,
+    title: "Animated Testimonials",
+    desc: "A sexy testimonial component with smooth blur animations.",
+    rText: "bottom-black",
+    packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
+    copyTargets: { demo: "demo-copy.tsx" },
+    comp: {
+      demo: dynamic(() => import("@/registry/animated-blur-testimonials/demo")),
     },
   },
 };

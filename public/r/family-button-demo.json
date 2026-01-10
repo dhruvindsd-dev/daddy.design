@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "family-button-demo",
+  "title": "Family status indicator Demo",
+  "author": "Dhruvin D.<dhruvinddev@gmail.com>",
+  "description": "Family like dynamic status indicator",
+  "dependencies": [
+    "motion",
+    "react-icons"
+  ],
+  "registryDependencies": [
+    "family-button"
+  ],
+  "files": [
+    {
+      "path": "src/registry/family-button/demo.tsx",
+      "content": "\"use client\";\nimport { useState, useEffect } from \"react\";\nimport FamilyButton from \".\";\nimport { cn } from \"@/lib/utils\";\nimport { motion } from \"motion/react\";\nimport { TbPlus } from \"react-icons/tb\";\nimport useDurationStore from \"@/stores/duration-store\";\n\nconst TABS = [\n  { name: \"Normal\", value: undefined },\n  { name: \"Loading\", value: \"loading\" },\n  { name: \"Success\", value: \"success\" },\n  { name: \"Error\", value: \"error\" },\n] as const;\n\nconst FamilyButtonDemo = () => {\n  const [tab, setTab] = useState<(typeof TABS)[number]>(TABS[0]);\n  const { duration } = useDurationStore();\n\n  const handleNext = () => {\n    const currentIndex = TABS.findIndex((i) => i.value === tab.value);\n    const nextIndex = (currentIndex + 1) % TABS.length;\n    setTab(TABS[nextIndex]);\n  };\n\n  useEffect(() => {\n    const interval = setInterval(() => {\n      handleNext();\n    }, 5000);\n\n    return () => clearInterval(interval);\n  }, [tab.value]);\n\n  return (\n    <div className=\"flex h-screen w-screen items-center justify-center\">\n      <div className=\"relative flex min-h-[400px] flex-col items-center justify-center gap-14 py-8\">\n        <FamilyButton\n          icon={<TbPlus strokeWidth={3.2} />}\n          variant={tab.value}\n          onClick={handleNext}\n          transition={{ type: \"spring\", duration: 0.6 * duration, bounce: 0.3 }}\n        >\n          Submit\n        </FamilyButton>\n\n        <div className=\"flex items-center justify-center gap-3 text-black/30\">\n          {TABS.map((i) => (\n            <button\n              onClick={() => setTab(i)}\n              className={cn(\n                \"relative flex flex-1 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full border border-neutral-100 px-4 py-1 text-sm font-semibold transition-colors\",\n              )}\n              key={i.name}\n            >\n              {tab.value === i.value && (\n                <motion.div\n                  className=\"absolute inset-0 flex items-center justify-center bg-neutral-100 text-black/60\"\n                  initial={{ clipPath: \"inset(0 100% 0 0)\" }}\n                  animate={{ clipPath: \"inset(0 0% 0 0)\" }}\n                  transition={{ duration: 5 }}\n                >\n                  {i.name}\n                </motion.div>\n              )}\n              <span className=\"\">{i.name}</span>\n            </button>\n          ))}\n        </div>\n      </div>\n    </div>\n  );\n};\nexport default FamilyButtonDemo;\n",
+      "type": "registry:component",
+      "target": "components/ui/family-button/demo.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
