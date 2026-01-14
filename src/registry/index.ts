@@ -23,10 +23,10 @@ export enum COMPS {
   ANIMATED_BLUR_TESTIMONIALS = "animated-blur-testimonials",
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
+  GOOEY_MENU = "gooey-menu",
 
   // SPLASH_3D_BUTTON = "3d-splash-button",
   // NATIVE_SWIPEABLE_SHEETS = "native-swipeable-sheets",
-  // GOOEY_MENU = "gooey-menu",
   // SUB_SELECT_TOGGLE = "sub-select-toggle",
   // SHARED_LAYOUT_TABS = "shared-layout-tabs",
   // APPLE_WATCH_USERS_ANIMATION = "apple-watch-users-animation",
@@ -68,6 +68,14 @@ export const COMP_DATA: Record<COMPS, IComp> = {
       demo: dynamic(() => import("@/registry/dynamic-scroll-island-toc/demo")),
     },
   },
+
+  [COMPS.GOOEY_MENU]: {
+    slug: COMPS.GOOEY_MENU,
+    packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
+    comp: {
+      demo: dynamic(() => import("@/registry/gooey-menu/demo")),
+    },
+  },
 };
 
 export const COMP_METADATA: Record<COMPS, CompMeta> = {
@@ -92,5 +100,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     title: "Dynamic Scroll Island",
     desc: "Apple style dynamic scroll island",
     rText: "top-white",
+  },
+
+  [COMPS.GOOEY_MENU]: {
+    slug: COMPS.GOOEY_MENU,
+    title: "Gooey Menu",
+    desc: "Simple Menu with svg gooey effect",
   },
 };

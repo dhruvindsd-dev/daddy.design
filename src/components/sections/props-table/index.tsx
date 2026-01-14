@@ -11,6 +11,7 @@ export interface PropsTableData {
   type: string;
   default_value: string;
   description: string;
+  type_info?: string;
 }
 
 interface Props {
@@ -42,6 +43,21 @@ const PropsTable = ({ items, className }: Props) => {
     );
   }
 
+  function renderType(type: string, info?: string) {
+    if (!info) return format(type);
+
+    return (
+      <Popover>
+        <PopoverTrigger className="cursor-help">{format(type)}</PopoverTrigger>
+        <PopoverContent side="top">
+          <code className="code outline-none! leading-snug! inline-block!">
+            {format(info)}
+          </code>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
   return (
     <table className={cn("table table-fixed", className)}>
       <thead>
@@ -70,7 +86,7 @@ const PropsTable = ({ items, className }: Props) => {
                 </Popover>
               </div>
             </td>
-            <td>{format(i.type)}</td>
+            <td>{renderType(i.type, i.type_info)}</td>
             <td>{format(i.default_value)}</td>
           </tr>
         ))}
