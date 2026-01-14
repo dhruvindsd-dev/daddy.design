@@ -232,7 +232,7 @@ body {
   @property --fb {
     syntax: "<length>";
     inherits: false;
-    initial-value: 40px;
+    initial-value: 30px;
   }
 
   .scroll-fade-y {
@@ -259,13 +259,13 @@ body {
       --ft: 0px;
     }
     to {
-      --ft: 40px;
+      --ft: 30px;
     }
   }
 
   @keyframes b {
     from {
-      --fb: 40px;
+      --fb: 30px;
     }
     to {
       --fb: 0px;
