@@ -1,5 +1,5 @@
 "use client";
-import { motion, MotionConfig, Transition } from "motion/react";
+import { animate, motion, MotionConfig, Transition } from "motion/react";
 
 const trans: Transition = {
   ease: "easeInOut",
@@ -17,6 +17,19 @@ interface CoolCheckboxProps {
 }
 
 export default function CoolCheckbox({ todos, onToggle }: CoolCheckboxProps) {
+  function handleClick(id: number) {
+    onToggle(id);
+
+    // only animate if checking
+    const todo = todos.find((t) => t.id === id);
+    if (todo?.checked) return;
+
+    animate(
+      `#todo-${id}`,
+      { x: [0, 4, -2, 0] },
+      { duration: 0.3, delay: delay },
+    );
+  }
   return (
     <MotionConfig transition={trans}>
       <div className="flex items-center justify-center p-4">
@@ -24,7 +37,7 @@ export default function CoolCheckbox({ todos, onToggle }: CoolCheckboxProps) {
           {todos.map((todo) => (
             <li key={todo.id}>
               <button
-                onClick={() => onToggle(todo.id)}
+                onClick={() => handleClick(todo.id)}
                 className="flex w-fit cursor-pointer items-center gap-2 rounded-md px-4 py-3"
                 role="checkbox"
                 aria-checked={todo.checked}
@@ -32,23 +45,30 @@ export default function CoolCheckbox({ todos, onToggle }: CoolCheckboxProps) {
               >
                 {SVG(todo)}
                 <motion.p
-                  transition={{ ...trans, delay: todo.checked ? delay : 0 }}
+                  transition={trans}
                   initial={false}
-                  animate={{
-                    x: todo.checked ? [0, 4, -2, 0] : 0,
-                    opacity: todo.checked ? 0.4 : 1,
-                  }}
-                  className="relative line-clamp-1 flex-1 overflow-hidden"
+                  animate={{ opacity: todo.checked ? 0.4 : 1 }}
+                  className="relative line-clamp-1 flex-1"
                 >
-                  {todo.title}
+                  <span
+                    id={`todo-${todo.id}`}
+                    className="line-clamp-1 select-none"
+                  >
+                    {todo.title}
+                  </span>
                   <motion.span
                     transition={{
                       ...trans,
                       delay: todo.checked ? delay : 0,
                     }}
-                    initial={{ x: todo.checked ? "0%" : "-101%" }}
-                    animate={{ x: todo.checked ? "0%" : "-101%" }}
-                    className="absolute inset-x-0 top-1/2 inline-block h-[1px] bg-black"
+                    initial={false}
+                    animate={{
+                      // x: todo.checked ? "0%" : "-101%",
+                      clipPath: todo.checked
+                        ? "inset(0% 0% 0% 0%)"
+                        : "inset(0% 100% 0% 0%)",
+                    }}
+                    className="absolute -inset-x-0.5 top-1/2 inline-block h-[1px] bg-black"
                   />
                 </motion.p>
               </button>
@@ -74,10 +94,7 @@ function SVG(todo: { id: number; title: string; checked: boolean }) {
     >
       <motion.path
         transition={{ ...trans, delay: todo.checked ? delay : 0 }}
-        initial={{
-          opacity: todo.checked ? 1 : 0,
-          scale: todo.checked ? 1 : 0.5,
-        }}
+        initial={false}
         animate={{
           opacity: todo.checked ? 1 : 0,
           scale: todo.checked ? 1 : 0.5,
@@ -87,11 +104,7 @@ function SVG(todo: { id: number; title: string; checked: boolean }) {
       />
       <motion.path
         transition={{ ...trans, delay: todo.checked ? delay : 0 }}
-        initial={{
-          clipPath: todo.checked
-            ? "inset(0% 0% 0% 0%)"
-            : "inset(0% 100% 0% 0%)",
-        }}
+        initial={false}
         animate={{
           clipPath: todo.checked
             ? "inset(0% 0% 0% 0%)"
@@ -102,14 +115,12 @@ function SVG(todo: { id: number; title: string; checked: boolean }) {
       />
       <motion.path
         strokeWidth={2}
-        transition={{ ...trans, delay: todo.checked ? 0 : delay }}
-        initial={{
-          pathLength: todo.checked ? 0 : 1,
-          strokeOpacity: todo.checked ? [1, 1, 0] : [0, 1, 1, 1],
-        }}
+        // transition={trans}
+        initial={false}
         animate={{
           pathLength: todo.checked ? 0 : 1,
-          strokeOpacity: todo.checked ? [1, 1, 0] : [0, 1, 1, 1],
+          strokeOpacity: todo.checked ? [1, 1, 0] : [0, 1, 1],
+          transition: { delay: todo.checked ? 0 : delay, ...trans },
         }}
         d="M22.8891 22.889C22.1189 23.6593 21.0955 24.0726 19.517 24.2848C17.9242 24.4989 15.8426 24.5 13 24.5C10.1574 24.5 8.07582 24.4989 6.483 24.2848C4.90456 24.0726 3.88121 23.6594 3.11092 22.889C2.34063 22.1188 1.92743 21.0955 1.71521 19.517C1.50106 17.9242 1.5 15.8426 1.5 13C1.5 10.1574 1.50106 8.07582 1.71521 6.483C1.92743 4.90456 2.34062 3.88121 3.11091 3.11091C3.88121 2.34062 4.90456 1.92743 6.483 1.71521C8.07582 1.50106 10.1574 1.5 13 1.5C15.8426 1.5 17.9242 1.50106 19.517 1.71521C21.0955 1.92743 22.1188 2.34062 22.889 3.11091C23.6594 3.8812 24.0726 4.90456 24.2848 6.483C24.4989 8.07582 24.5 10.1574 24.5 13C24.5 15.8426 24.4989 17.9242 24.2848 19.517C24.0726 21.0955 23.6594 22.1188 22.8891 22.889Z"
         className="stroke-gray-400"
