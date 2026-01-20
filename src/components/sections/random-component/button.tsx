@@ -1,0 +1,149 @@
+"use client";
+import { cn } from "@/lib/utils";
+import { useAnimate } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+
+interface Props {
+  onClick?: () => void;
+}
+
+const DUR = 1;
+const RandomButton = ({ onClick }: Props) => {
+  const [isHeldDown, setIsHeldDown] = useState(false);
+  const [scope, animate] = useAnimate();
+  const { play } = useAudio("/assets/click.mp3");
+  const completeRef = useRef(false);
+
+  useEffect(() => {
+    if (!isHeldDown) return;
+    completeRef.current = false;
+    const tmt = setTimeout(() => {
+      onClick?.();
+      setIsHeldDown(false);
+      animate(
+        "#button-progress",
+        { clipPath: "inset(0% 0% 100% 0%)" },
+        { duration: 0.4, type: "spring", bounce: 0 },
+      );
+      completeRef.current = true;
+      playAudio();
+    }, DUR * 1000);
+
+    return () => {
+      clearTimeout(tmt);
+      if (!completeRef.current) {
+        animate(
+          "#button-progress",
+          { clipPath: "inset(0% 100% 0% 0%)" },
+          { duration: 0.2 },
+        );
+      }
+    };
+  }, [isHeldDown]);
+
+  useEffect(() => {
+    if (!isHeldDown) return;
+    const controls = animate([
+      [
+        "#button-progress",
+        { opacity: 1, clipPath: "inset(0% 0% 0% 100%)" },
+        { duration: 0 },
+      ],
+      [
+        "#button-progress",
+        { clipPath: ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"] },
+        { duration: DUR },
+      ],
+    ]);
+
+    return () => {
+      controls.stop();
+    };
+  }, [isHeldDown]);
+
+  function handlePress() {
+    setIsHeldDown(true);
+  }
+
+  function handleRelease() {
+    setIsHeldDown(false);
+  }
+
+  function playAudio() {
+    play();
+  }
+
+  return (
+    <div
+      ref={scope}
+      className="group relative cursor-pointer select-none"
+      onMouseDown={handlePress}
+      onMouseUp={handleRelease}
+      onMouseLeave={handleRelease}
+      onTouchStart={handlePress}
+      onTouchEnd={handleRelease}
+      onTouchCancel={handleRelease}
+    >
+      <div className="animation" />
+      <div
+        className={cn(
+          "relative z-10 h-24 will-change-transform",
+          "group-hover:-translate-y-2 group-hover:[transition-duration:250ms]",
+          "border-border flex items-center justify-center overflow-hidden rounded-2xl border bg-white",
+          "[transition:all_600ms_cubic-bezier(0.645,0.045,0.355,1)]",
+          isHeldDown && "translate-y-0! [transition-duration:34ms]!",
+        )}
+      >
+        <div
+          id="button-progress"
+          aria-hidden
+          className="absolute inset-0 z-10 h-full w-full origin-top-left rounded-2xl bg-white opacity-0 mix-blend-difference"
+          style={{ clipPath: "inset(0% 100% 0% 0%)" }}
+        />
+
+        <p className="font-extrabold relative text-center text-xl md:text-3xl">
+          Hold To Load Random Component
+        </p>
+      </div>
+      <div className="absolute inset-[0.5px] rounded-2xl bg-black/80" />
+    </div>
+  );
+};
+export default RandomButton;
+
+function useAudio(url: string) {
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioBufferRef = useRef<AudioBuffer | null>(null);
+
+  useEffect(() => {
+    // @ts-ignore
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContextRef.current = new AudioContext();
+
+    fetch(url)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) =>
+        audioContextRef.current!.decodeAudioData(arrayBuffer),
+      )
+      .then((decodedAudio) => {
+        audioBufferRef.current = decodedAudio;
+      })
+      .catch((err) => console.error("Error loading audio", err));
+  }, [url]);
+
+  const play = () => {
+    if (!audioContextRef.current || !audioBufferRef.current) return;
+
+    const source = audioContextRef.current.createBufferSource();
+    source.buffer = audioBufferRef.current;
+
+    const gainNode = audioContextRef.current.createGain();
+    gainNode.gain.value = 0.8;
+
+    source.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
+    source.start();
+  };
+
+  return { play };
+}

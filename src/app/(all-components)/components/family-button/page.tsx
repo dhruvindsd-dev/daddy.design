@@ -5,7 +5,7 @@ import FamilyButtonDemo from "@/registry/family-button/demo";
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative h-screen w-screen">
+      <div className="relative h-screen w-screen flex items-center justify-center">
         <FamilyButtonDemo />
       </div>
 
@@ -42,6 +42,7 @@ const Index = () => {
               description:
                 "Global motion transition configuration for all child animations",
             },
+
             {
               name: "className",
               type: "string",

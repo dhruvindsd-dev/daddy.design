@@ -70,10 +70,9 @@ const DynamicScrollIslandTocDemo = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const all = useMemo(() => {
-    const arr = Object.keys(DATA).reduce<string[]>((acc, key) => {
+    return Object.keys(DATA).reduce<string[]>((acc, key) => {
       return acc.concat(DATA[key].map((url) => url));
     }, []);
-    return arr.sort(() => random() - 0.5);
   }, []);
 
   function setActive(val: TOC_INTERFACE) {
@@ -82,56 +81,54 @@ const DynamicScrollIslandTocDemo = () => {
 
   const filteredData = active.value ? DATA[active.value] : all;
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex flex-col">
-        <MotionConfig transition={{ duration: 0.6 * duration }}>
-          <div className="relative flex justify-center">
-            <DynamicScrollIslandTOC
-              data={TOC_DATA}
-              value={active}
-              setValue={setActive}
-              ref={ref}
-              transition={{
-                type: "spring",
-                bounce: 0,
-                duration: 0.6 * duration,
-              }}
-            />
-          </div>
+    <div className="flex flex-col">
+      <MotionConfig transition={{ duration: 0.6 * duration }}>
+        <div className="relative flex justify-center">
+          <DynamicScrollIslandTOC
+            data={TOC_DATA}
+            value={active}
+            setValue={setActive}
+            ref={ref}
+            transition={{
+              type: "spring",
+              bounce: 0,
+              duration: 0.6 * duration,
+            }}
+          />
+        </div>
 
-          <div className="relative mt-8 w-[600px]">
-            <div className="h-[500px] overflow-scroll scroll-fade-y" ref={ref}>
-              <div>
-                <AnimatePresence mode="popLayout">
-                  <motion.div
-                    key={active.value}
-                    className={cn(
-                      "grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] 2xl:grid-cols-4",
-                      "[mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)] [mask-size:100%_300%] [mask-repeat:no-repeat]",
-                    )}
-                    {...animation}
-                  >
-                    {filteredData.map((url, idx) => {
-                      return (
-                        <div
-                          key={idx}
-                          className="relative aspect-square overflow-hidden rounded-xl"
-                        >
-                          <img
-                            src={url}
-                            className="absolute inset-0 h-full w-full object-cover"
-                            alt="image"
-                          />
-                        </div>
-                      );
-                    })}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+        <div className="relative mt-8 w-[600px]">
+          <div className="scroll-fade-y h-[500px] overflow-scroll" ref={ref}>
+            <div>
+              <AnimatePresence mode="popLayout">
+                <motion.div
+                  key={active.value}
+                  className={cn(
+                    "grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] 2xl:grid-cols-4",
+                    "[mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)] [mask-size:100%_300%] [mask-repeat:no-repeat]",
+                  )}
+                  {...animation}
+                >
+                  {filteredData.map((url, idx) => {
+                    return (
+                      <div
+                        key={idx}
+                        className="relative aspect-square overflow-hidden rounded-xl"
+                      >
+                        <img
+                          src={url}
+                          className="absolute inset-0 h-full w-full object-cover"
+                          alt="image"
+                        />
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
-        </MotionConfig>
-      </div>
+        </div>
+      </MotionConfig>
     </div>
   );
 };

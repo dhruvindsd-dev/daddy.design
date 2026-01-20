@@ -38,10 +38,8 @@ function AnimatedBlurTestimonialsDemo() {
   const { duration } = useDurationStore();
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="max-w-[450px]">
-        <AnimatedBlurTestimonials _duration={duration * 0.6} data={DATA} />
-      </div>
+    <div className="max-w-[450px]">
+      <AnimatedBlurTestimonials _duration={duration * 0.6} data={DATA} />
     </div>
   );
 }

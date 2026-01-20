@@ -276,6 +276,7 @@ function Text({
           <motion.div
             layout="position"
             layoutId={`${lPrefix}-toc-chevron`}
+            initial={false}
             animate={{ rotate: open ? 0 : 180 }}
           >
             <TbChevronUp strokeWidth={4} />

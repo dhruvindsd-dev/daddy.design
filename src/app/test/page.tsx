@@ -1,23 +1,99 @@
-const imgGroup =
-  "http://localhost:3845/assets/e3787c82ccec3035dfb544d37dad4a91c99fd491.svg";
+"use client";
+import React from "react";
+import { useDrag } from "@use-gesture/react";
+import { useSpring, motion } from "motion/react";
+import Icon from "@/components/ui/icon";
 
-interface Props {}
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
 
-const Index = ({}: Props) => {
+const MorphingDragSquare: React.FC = () => {
+  const scaleX = useSpring(1, {
+    stiffness: 520,
+    damping: 10,
+  });
+
+  const scaleY = useSpring(1, {
+    stiffness: 520,
+    damping: 10,
+  });
+
+  const maxStretch = 1.5;
+  const minScale = 0.2;
+  const dragSensitivity = 0.0009;
+
+  const bind = useDrag(
+    ({ active, movement: [mx, my] }) => {
+      if (!active) {
+        scaleX.set(1);
+        scaleY.set(1);
+        return;
+      }
+
+      const absX = Math.abs(mx);
+      const absY = Math.abs(my);
+      const total = absX + absY;
+
+      if (total === 0) {
+        scaleX.set(1);
+        scaleY.set(1);
+        return;
+      }
+
+      const weightX = absX / total;
+      const weightY = absY / total;
+
+      const stretchX = clamp(1 + absX * dragSensitivity, 1, maxStretch);
+      const stretchY = clamp(1 + absY * dragSensitivity, 1, maxStretch);
+
+      const squishFromX = clamp(1 - 0.5 * (stretchX - 1), minScale, 1);
+      const squishFromY = clamp(1 - 0.5 * (stretchY - 1), minScale, 1);
+
+      const scaleXHorizontal = stretchX;
+      const scaleYHorizontal = squishFromX;
+
+      const scaleXVertical = squishFromY;
+      const scaleYVertical = stretchY;
+
+      const nextScaleX = scaleXHorizontal * weightX + scaleXVertical * weightY;
+      const nextScaleY = scaleYHorizontal * weightX + scaleYVertical * weightY;
+
+      scaleX.set(nextScaleX);
+      scaleY.set(nextScaleY);
+    },
+    {
+      filterTaps: true,
+    },
+  );
+
+  const dragProps = bind() ?? {};
+
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-[#FCFCFC]">
-      <button
-        className="flex items-center gap-1.5 overflow-clip rounded-[5px] bg-white px-2 py-1 outline-[0.5px] outline-black/10"
-        style={{
-          boxShadow: `hsl(0 0% 0% / 0.022) 0px 3px 6px -2px, hsl(0 0% 0% / 0.044) 0px 1px 1px`,
-        }}
-      >
-        <img alt="" className="block size-4" src={imgGroup} />
-        <p className="relative shrink-0 text-[13px] font-medium text-black">
-          Daily Briefs
-        </p>
-      </button>
+    <div className="flex gap-10">
+      <div {...dragProps}>
+        <motion.div
+          style={{ scaleX, scaleY, borderRadius: 5000 }}
+          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
+        >
+          <Icon name="CLI" className="size-20 text-black/60" />
+        </motion.div>
+      </div>
+      <div {...dragProps}>
+        <motion.div
+          style={{ scaleX, scaleY, borderRadius: 5000 }}
+          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
+        >
+          <Icon name="CIRCLE_ARROW_RIGHT" className="size-20 text-black/60" />
+        </motion.div>
+      </div>
     </div>
   );
 };
-export default Index;
+
+export default () => {
+  return (
+    <div className="bg-background flex h-screen w-screen items-center justify-center">
+      <MorphingDragSquare />
+    </div>
+  );
+};

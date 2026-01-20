@@ -15,12 +15,11 @@ const GooeyMenuDemo = () => {
   const { duration } = useDurationStore();
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <GooeyMenu
-        items={items}
-        transition={{ type: "spring", bounce: 0.3, duration: 0.6 * duration }}
-      />
-    </div>
+    <GooeyMenu
+      items={items}
+      direction="right"
+      transition={{ type: "spring", bounce: 0.3, duration: 0.6 * duration }}
+    />
   );
 };
 export default GooeyMenuDemo;

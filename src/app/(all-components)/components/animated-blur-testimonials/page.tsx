@@ -5,7 +5,7 @@ import AnimatedBlurTestimonialsDemo from "@/registry/animated-blur-testimonials/
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative h-screen w-screen">
+      <div className="relative flex h-screen w-screen items-center justify-center">
         <AnimatedBlurTestimonialsDemo />
       </div>
 

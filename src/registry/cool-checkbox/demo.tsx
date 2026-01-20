@@ -23,10 +23,6 @@ function CoolCheckBoxDemo() {
     );
   };
 
-  return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <CoolCheckbox todos={todos} onToggle={handleToggle} />
-    </div>
-  );
+  return <CoolCheckbox todos={todos} onToggle={handleToggle} />;
 }
 export default CoolCheckBoxDemo;

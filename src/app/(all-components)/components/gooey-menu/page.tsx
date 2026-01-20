@@ -5,7 +5,7 @@ import GooeyMenuDemo from "@/registry/gooey-menu/demo";
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative h-screen w-screen">
+      <div className="relative h-screen w-screen flex items-center justify-center">
         <GooeyMenuDemo />
       </div>
 

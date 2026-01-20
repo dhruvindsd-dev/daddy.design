@@ -7,6 +7,7 @@ export interface IComp {
   diaableSpeedToggle?: boolean;
   comp: {
     demo: any;
+    random?: any;
   };
 }
 
@@ -66,6 +67,7 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     packages: ["motion", "tailwind-merge", "clsx"],
     comp: {
       demo: dynamic(() => import("@/registry/dynamic-scroll-island-toc/demo")),
+      random: dynamic(() => import("@/registry/dynamic-scroll-island-toc/random")),
     },
   },
 
@@ -108,3 +110,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     desc: "Simple Menu with svg gooey effect",
   },
 };
+
+export const RANDOM_DATA = [
+  COMPS.ANIMATED_BLUR_TESTIMONIALS,
+  COMPS.DYNAMIC_SCROLL_ISLAND,
+  COMPS.FAMILY_BUTTON,
+  COMPS.COOL_CHECKBOX,
+  COMPS.GOOEY_MENU,
+];

@@ -1,85 +1,61 @@
-"use client";
-import React from "react";
-import { useDrag } from "@use-gesture/react";
-import { useSpring, motion } from "motion/react";
+// import { DynamicAllComponentsView } from "@/components/sections/all-elements";
+import { DynamicAllComponentsView } from "@/components/sections/masonary-view";
+import RandomComponent from "@/components/sections/random-component";
+import BouncyButton from "@/components/ui/bouncy-button";
 import Icon from "@/components/ui/icon";
+import Logo from "@/components/ui/logo";
+import { X_LINK } from "@/lib/const";
+import { TbBrandX } from "react-icons/tb";
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, value));
-
-const MorphingDragSquare: React.FC = () => {
-  const scaleX = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const scaleY = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const maxStretch = 1.5;
-  const minScale = 0.2;
-  const dragSensitivity = 0.0009;
-
-  const bind = useDrag(
-    ({ active, movement: [mx, my] }) => {
-      if (!active) {
-        scaleX.set(1);
-        scaleY.set(1);
-        return;
-      }
-
-      const absX = Math.abs(mx);
-      const absY = Math.abs(my);
-      const total = absX + absY;
-
-      if (total === 0) {
-        scaleX.set(1);
-        scaleY.set(1);
-        return;
-      }
-
-      const weightX = absX / total;
-      const weightY = absY / total;
-
-      const stretchX = clamp(1 + absX * dragSensitivity, 1, maxStretch);
-      const stretchY = clamp(1 + absY * dragSensitivity, 1, maxStretch);
-
-      const squishFromX = clamp(1 - 0.5 * (stretchX - 1), minScale, 1);
-      const squishFromY = clamp(1 - 0.5 * (stretchY - 1), minScale, 1);
-
-      const scaleXHorizontal = stretchX;
-      const scaleYHorizontal = squishFromX;
-
-      const scaleXVertical = squishFromY;
-      const scaleYVertical = stretchY;
-
-      const nextScaleX = scaleXHorizontal * weightX + scaleXVertical * weightY;
-      const nextScaleY = scaleYHorizontal * weightX + scaleYVertical * weightY;
-
-      scaleX.set(nextScaleX);
-      scaleY.set(nextScaleY);
-    },
-    {
-      filterTaps: true,
-    },
-  );
-
-  const dragProps = bind() ?? {};
-
+const AllComponents = () => {
   return (
-    <div className="bg-background flex h-screen w-screen items-center justify-center">
-      <div {...dragProps}>
-        <motion.div
-          style={{ scaleX, scaleY, borderRadius: 5000 }}
-          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
-        >
-          <Icon name="CLI" className="size-20 text-black/60" />
-        </motion.div>
+    <main>
+      <div className="p-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="border-border relative overflow-hidden rounded-2xl border bg-white">
+            <div className="relative z-50 flex h-full flex-col justify-end gap-10 p-6 md:p-12">
+              <Logo large className="shadow-xl shadow-black/20" />
+
+              <p className="text-3xl font-extrabold text-balance md:text-4xl">
+                Copy paste the best interactive component directly into your
+                project
+              </p>
+              <div className="text-ds-text-2 flex flex-col gap-3 text-sm leading-[1.333] font-medium md:text-base">
+                <div className="flex items-center gap-2">
+                  <Icon name="COPY_2" size={20} />
+                  <p>Copy paste into your project using ShadCn</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon name="V0" size={20} />
+                  <p>One click import to V0</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon size={20} name="VIBE_CODING" />
+                  <p>Vibe Coding prompt</p>
+                </div>
+              </div>
+              <a
+                href={X_LINK}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Follow on X"
+                className="w-fit"
+              >
+                <BouncyButton>
+                  <TbBrandX size={18} />
+                  Follow for updates
+                </BouncyButton>
+              </a>
+            </div>
+          </div>
+
+          <RandomComponent />
+        </div>
+        <DynamicAllComponentsView />
       </div>
-    </div>
+
+      <div className="bg-bg/20 pointer-events-none fixed bottom-0 z-298 h-[100px] w-full [mask-image:linear-gradient(to_top,rgb(0,0,0)_5%,transparent_100%)] backdrop-blur-[5px]" />
+    </main>
   );
 };
-
-export default MorphingDragSquare;
+export default AllComponents;

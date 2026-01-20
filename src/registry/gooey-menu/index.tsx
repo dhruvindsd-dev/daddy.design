@@ -8,7 +8,7 @@ import {
     AnimatePresence,
     Transition,
 } from "motion/react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import { TbX, TbMenu } from "react-icons/tb";
 
 const blurAni: MotionProps = {
@@ -44,11 +44,10 @@ function GooeyMenu({
   className,
   onChange,
   transition = { type: "spring", duration: 0.5, bounce: 0.3 },
-  filterId: _fi = "gooey-menu-filter",
+  filterId = "gooey-menu-filter",
   direction = "bottom",
 }: Props) {
   const [open, setOpen] = useState(false);
-  const id = useId();
 
   function handleClick(item: MenuItem) {
     setOpen(false);
@@ -69,7 +68,7 @@ function GooeyMenu({
   const axis = direction === "left" || direction === "right" ? "x" : "y";
   const dir = direction === "left" || direction === "top" ? -1 : 1;
 
-  const fId = _fi || `gooey-menu-filter-${id}`;
+  const fId = filterId;
   const mId = `${fId}-menu`;
   return (
     <MotionConfig transition={transition}>
@@ -96,7 +95,7 @@ function GooeyMenu({
                   }}
                   className={cn(
                     "absolute inset-0 flex size-12 cursor-pointer items-center justify-center rounded-full",
-                    "bg-black text-white [&>svg]:transition-opacity [&>svg]:opacity-60 hover:[&>svg]:opacity-100",
+                    "bg-black text-white [&>svg]:opacity-60 [&>svg]:transition-opacity hover:[&>svg]:opacity-100",
                   )}
                   onClick={() => handleClick(i)}
                 >
@@ -147,12 +146,7 @@ function SvgFilter({ id }: { id: string }) {
           <feColorMatrix
             in="blur-sm"
             mode="matrix"
-            values="
-                  1 0 0 0 0  
-                  0 1 0 0 0  
-                  0 0 1 0 0  
-                  0 0 0 18 -7
-                "
+            values=" 1 0 0 0 0   0 1 0 0 0   0 0 1 0 0   0 0 0 18 -7 "
             result="goo"
           />
           <feBlend in="SourceGraphic" in2="goo" />
