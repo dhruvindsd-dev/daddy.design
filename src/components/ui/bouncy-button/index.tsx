@@ -1,6 +1,6 @@
 "use client";
-import useAudio from "@/hooks/use-audio";
 import usePress from "@/hooks/use-press";
+import useSoundEffect from "@/hooks/use-sound-effect";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
@@ -54,12 +54,12 @@ const BouncyButton = ({
     hoverNormalze: dur?.hoverNormalze ?? 600,
   };
 
-  const { play } = useAudio("/assets/click2.mp3");
+  const playClickBounce = useSoundEffect("click-bounce");
   const { isActive, handlePress } = usePress(d.press);
 
   const handleClick = () => {
     if (disabled) return;
-    play();
+    playClickBounce();
     handlePress();
     onClick?.();
   };

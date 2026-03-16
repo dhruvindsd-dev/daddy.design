@@ -1,6 +1,6 @@
 "use client";
-import useAudio from "@/hooks/use-audio";
 import usePress from "@/hooks/use-press";
+import useSoundEffect from "@/hooks/use-sound-effect";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
 import {
@@ -51,7 +51,8 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
     sBoun: dur?.springBounce ?? 0.3,
   };
 
-  const { play } = useAudio("/assets/click2.mp3");
+  const playClickBounce = useSoundEffect("click-bounce");
+  const playHover = useSoundEffect("hover");
   const { isActive, handlePress } = usePress(d.press);
   const [hover, setHover] = useState<Props["items"][number]>();
   const [jump, setJump] = useState(true);
@@ -122,6 +123,11 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
     setHover(i);
   }
 
+  function handleMouseEnter(i: Props["items"][number]) {
+    playHover();
+    handleEnter(i);
+  }
+
   useEffect(() => {
     if (!counter) return;
     handleClick();
@@ -133,7 +139,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   }
 
   function handleClick() {
-    play();
+    playClickBounce();
     handlePress();
   }
 
@@ -212,7 +218,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
                 }}
                 key={i.label}
                 ref={i.label === hover?.label ? activeMenuItemRef : null}
-                onMouseEnter={() => handleEnter(i)}
+                onMouseEnter={() => handleMouseEnter(i)}
                 onFocus={() => handleEnter(i)}
                 onMouseLeave={handleLeave}
                 onBlur={handleLeave}

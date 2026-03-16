@@ -1,4 +1,5 @@
 "use client";
+import useSoundEffect from "@/hooks/use-sound-effect";
 import { cn } from "@/lib/utils";
 import { useAnimate } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -11,7 +12,8 @@ const DUR = 1;
 const RandomButton = ({ onClick }: Props) => {
   const [isHeldDown, setIsHeldDown] = useState(false);
   const [scope, animate] = useAnimate();
-  const { play } = useAudio("/assets/click.mp3");
+  const release = useSoundEffect("click-bounce");
+  const hover = useSoundEffect("hover");
   const completeRef = useRef(false);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const RandomButton = ({ onClick }: Props) => {
         { duration: 0.4, type: "spring", bounce: 0 },
       );
       completeRef.current = true;
-      playAudio();
+      release();
     }, DUR * 1000);
 
     return () => {
@@ -63,20 +65,18 @@ const RandomButton = ({ onClick }: Props) => {
 
   function handlePress() {
     setIsHeldDown(true);
+    hover();
   }
 
   function handleRelease() {
     setIsHeldDown(false);
   }
 
-  function playAudio() {
-    play();
-  }
-
   return (
     <div
       ref={scope}
       className="group relative cursor-pointer select-none"
+      onMouseEnter={() => hover()}
       onMouseDown={handlePress}
       onMouseUp={handleRelease}
       onMouseLeave={handleRelease}
@@ -101,7 +101,7 @@ const RandomButton = ({ onClick }: Props) => {
           style={{ clipPath: "inset(0% 100% 0% 0%)" }}
         />
 
-        <p className="font-extrabold relative text-center text-xl md:text-3xl">
+        <p className="relative text-center text-xl font-extrabold md:text-3xl">
           Hold To Load Random Component
         </p>
       </div>
@@ -110,40 +110,3 @@ const RandomButton = ({ onClick }: Props) => {
   );
 };
 export default RandomButton;
-
-function useAudio(url: string) {
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const audioBufferRef = useRef<AudioBuffer | null>(null);
-
-  useEffect(() => {
-    // @ts-ignore
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContextRef.current = new AudioContext();
-
-    fetch(url)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) =>
-        audioContextRef.current!.decodeAudioData(arrayBuffer),
-      )
-      .then((decodedAudio) => {
-        audioBufferRef.current = decodedAudio;
-      })
-      .catch((err) => console.error("Error loading audio", err));
-  }, [url]);
-
-  const play = () => {
-    if (!audioContextRef.current || !audioBufferRef.current) return;
-
-    const source = audioContextRef.current.createBufferSource();
-    source.buffer = audioBufferRef.current;
-
-    const gainNode = audioContextRef.current.createGain();
-    gainNode.gain.value = 0.8;
-
-    source.connect(gainNode);
-    gainNode.connect(audioContextRef.current.destination);
-    source.start();
-  };
-
-  return { play };
-}

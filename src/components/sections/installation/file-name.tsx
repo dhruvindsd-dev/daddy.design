@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@/components/ui/icon";
-import useAudio from "@/hooks/use-audio";
+import useSoundEffect from "@/hooks/use-sound-effect";
 import { cn, throttle } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, useSpring } from "motion/react";
 import React, { useEffect, useId } from "react";
@@ -26,7 +26,8 @@ const FileName = ({ children, className }: Props) => {
   const id = useId();
   const x = useSpring(1, { stiffness: 200, damping: 20 });
   const y = useSpring(1, { stiffness: 200, damping: 20 });
-  const { play } = useAudio("/assets/click2.mp3");
+  const click = useSoundEffect("click");
+  const hover = useSoundEffect("hover");
   const tmt = React.useRef<NodeJS.Timeout | null>(null);
   const [state, setState] = useState<"normal" | "copied">("normal");
   const [counter, setCounter] = useState(0);
@@ -41,7 +42,7 @@ const FileName = ({ children, className }: Props) => {
   }, [counter, state]);
 
   const ani = throttle(() => {
-    play();
+    click();
     x.set(1.2);
     y.set(0.4);
   }, 34);
@@ -70,6 +71,7 @@ const FileName = ({ children, className }: Props) => {
   return (
     <button
       className="group/inline-code"
+      onMouseEnter={() => hover()}
       onMouseLeave={() => {
         setState("normal");
       }}

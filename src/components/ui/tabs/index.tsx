@@ -1,7 +1,7 @@
 "use client";
 
-import useAudio from "@/hooks/use-audio";
 import usePress from "@/hooks/use-press";
+import useSoundEffect from "@/hooks/use-sound-effect";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import {
@@ -107,7 +107,8 @@ const Tabs = <T extends string | number>({
     sBoun: dur?.springBounce ?? 0.3,
   };
 
-  const { play } = useAudio("/assets/click2.mp3");
+  const click = useSoundEffect("click-bounce");
+  const hover = useSoundEffect("hover");
   const { isActive, handlePress } = usePress(d.press);
 
   const container = useRef<HTMLDivElement>(null);
@@ -156,7 +157,7 @@ const Tabs = <T extends string | number>({
   // Click Handler
   // --------------------------------------------------
   function onClick(v: TabsItem<T>) {
-    play();
+    click();
     handlePress();
     setValue(v);
   }
@@ -172,9 +173,11 @@ const Tabs = <T extends string | number>({
 
     const dir = idx < currentIdx ? -1 : 1;
     const { lPerc, rPerc } = getClipValues();
+    const distance = Math.abs(currentIdx - idx) - 1;
+    const nudgeDist = hoverNudge + distance * 2;
 
-    if (dir === -1) l.set(lPerc - hoverNudge);
-    else r.set(rPerc - hoverNudge);
+    if (dir === -1) l.set(lPerc - nudgeDist);
+    else r.set(rPerc - nudgeDist);
   }
 
   function normalizeClip() {
@@ -241,7 +244,10 @@ const Tabs = <T extends string | number>({
             <button
               key={i.label}
               onClick={() => onClick(i)}
-              onMouseEnter={() => handleHover(idx)}
+              onMouseEnter={() => {
+                handleHover(idx);
+                hover();
+              }}
               onMouseLeave={normalizeClip}
               onFocus={() => handleHover(idx)}
               onBlur={normalizeClip}
