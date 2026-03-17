@@ -5,7 +5,7 @@ export const SOUND_EFFECTS = {
   },
   "click-bounce": {
     gain: 0.6,
-    src: "/assets/sounds/click-bounce.wav",
+    src: "/assets/sounds/click.wav",
   },
   hover: {
     gain: 0.15,
