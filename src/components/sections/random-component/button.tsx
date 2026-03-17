@@ -1,5 +1,5 @@
 "use client";
-import useSoundEffect from "@/hooks/use-sound-effect";
+import useAudio from "@/hooks/use-audio";
 import { cn } from "@/lib/utils";
 import { useAnimate } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -12,8 +12,8 @@ const DUR = 1;
 const RandomButton = ({ onClick }: Props) => {
   const [isHeldDown, setIsHeldDown] = useState(false);
   const [scope, animate] = useAnimate();
-  const release = useSoundEffect("click-bounce");
-  const hover = useSoundEffect("hover");
+  const release = useAudio("click-bounce");
+  const hover = useAudio("hover");
   const completeRef = useRef(false);
 
   useEffect(() => {

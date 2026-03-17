@@ -1,7 +1,7 @@
 "use client";
 
 import usePress from "@/hooks/use-press";
-import useSoundEffect from "@/hooks/use-sound-effect";
+import useAudio from "@/hooks/use-audio";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import {
@@ -107,8 +107,8 @@ const Tabs = <T extends string | number>({
     sBoun: dur?.springBounce ?? 0.3,
   };
 
-  const click = useSoundEffect("click-bounce");
-  const hover = useSoundEffect("hover");
+  const click = useAudio("click-bounce");
+  const hover = useAudio("hover");
   const { isActive, handlePress } = usePress(d.press);
 
   const container = useRef<HTMLDivElement>(null);

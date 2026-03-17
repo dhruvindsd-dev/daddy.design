@@ -1,6 +1,6 @@
 "use client";
 import usePress from "@/hooks/use-press";
-import useSoundEffect from "@/hooks/use-sound-effect";
+import useAudio from "@/hooks/use-audio";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
 import {
@@ -51,8 +51,8 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
     sBoun: dur?.springBounce ?? 0.3,
   };
 
-  const playClickBounce = useSoundEffect("click-bounce");
-  const playHover = useSoundEffect("hover");
+  const playClickBounce = useAudio("click-bounce");
+  const playHover = useAudio("hover");
   const { isActive, handlePress } = usePress(d.press);
   const [hover, setHover] = useState<Props["items"][number]>();
   const [jump, setJump] = useState(true);

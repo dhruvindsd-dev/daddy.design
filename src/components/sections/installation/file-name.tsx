@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@/components/ui/icon";
-import useSoundEffect from "@/hooks/use-sound-effect";
+import useAudio from "@/hooks/use-audio";
 import { cn, throttle } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, useSpring } from "motion/react";
 import React, { useEffect, useId } from "react";
@@ -26,8 +26,8 @@ const FileName = ({ children, className }: Props) => {
   const id = useId();
   const x = useSpring(1, { stiffness: 200, damping: 20 });
   const y = useSpring(1, { stiffness: 200, damping: 20 });
-  const click = useSoundEffect("click");
-  const hover = useSoundEffect("hover");
+  const click = useAudio("click");
+  const hover = useAudio("hover");
   const tmt = React.useRef<NodeJS.Timeout | null>(null);
   const [state, setState] = useState<"normal" | "copied">("normal");
   const [counter, setCounter] = useState(0);

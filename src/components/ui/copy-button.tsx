@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@/components/ui/icon";
-import useSoundEffect from "@/hooks/use-sound-effect";
+import useAudio from "@/hooks/use-audio";
 import { cn, throttle } from "@/lib/utils";
 import {
     AnimatePresence,
@@ -19,7 +19,7 @@ interface Props {
 const CopyButton = ({ value, elementId }: Props) => {
   const x = useSpring(1, { stiffness: 200, damping: 20 });
   const y = useSpring(1, { stiffness: 200, damping: 20 });
-  const playSuccess = useSoundEffect("success");
+  const click = useAudio("click");
   const tmt = React.useRef<NodeJS.Timeout | null>(null);
   const [state, setState] = useState<"normal" | "copied">("normal");
   const [counter, setCounter] = useState(0);
@@ -62,7 +62,7 @@ const CopyButton = ({ value, elementId }: Props) => {
     handleCopy();
     setCounter((c) => c + 1);
     setState("copied");
-    playSuccess();
+    click();
     ani();
     splash(e);
     tmt.current = setTimeout(() => {
