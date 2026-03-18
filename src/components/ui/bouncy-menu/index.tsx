@@ -64,7 +64,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   const activeTooltipItemRef = useRef<HTMLDivElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const activeMenuItemRef = useRef<HTMLButtonElement>(null);
-  const hasMounted = useRef(false);
+  const prevDeps = useRef(deps?.toString());
 
   const x = useSpring(0, { bounce: d.sBoun, visualDuration: d.sDur });
 
@@ -131,10 +131,9 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   }
 
   useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-      return;
-    }
+    const current = deps?.toString();
+    if (prevDeps.current === current) return;
+    prevDeps.current = current;
     handlePress();
   }, [deps?.toString()]);
 
@@ -151,6 +150,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   return (
     <motion.div
       {...FADE_IN_ANI}
+      initial={false}
       className="group relative w-fit"
       style={
         {

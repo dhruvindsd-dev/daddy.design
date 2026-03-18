@@ -6,7 +6,7 @@ import { ROUTES } from "@/lib/const";
 import { getFilePath } from "@/lib/utils";
 import { COMPS, COMP_DATA } from "@/registry";
 import { globby } from "globby";
-import ComponentActions from "../component-actions";
+import SetComponentActions from "../component-actions/set-actions";
 import FileName from "./file-name";
 import SourceUtilsCode from "./source-utils-code";
 import { createPrompt } from "./utils";
@@ -32,7 +32,7 @@ const Installation = async ({ component }: Props) => {
   const prompt = createPrompt(obj, dCode, mCode);
   return (
     <>
-      <ComponentActions component={component} prompt={prompt} code={mCode} />
+      <SetComponentActions component={component} prompt={prompt} code={mCode} />
       <section>
         <p className="font-semibold">Installation</p>
         <hr className="my-6" />

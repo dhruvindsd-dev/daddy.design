@@ -2,20 +2,15 @@
 import BouncyMenu from "@/components/ui/bouncy-menu";
 import Icon from "@/components/ui/icon";
 import Controller from "./controls";
-import { COMPS } from "@/registry";
 import AniSpeedToggle from "./animation-speed-toggle";
 import { openInNewTab } from "@/lib/utils";
 import { DOMAIN, ROUTES } from "@/lib/const";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { getCmd } from "@/components/ui/cli-install";
+import useComponentActionsStore from "@/stores/component-actions-store";
 
-interface Props {
-  component: COMPS;
-  prompt?: string;
-  code?: string;
-}
-
-const ComponentActions = ({ component, prompt, code }: Props) => {
+const ComponentActions = () => {
+  const { component, prompt, code } = useComponentActionsStore();
   const [tab] = useLocalStorage<any>({ key: "cli-tab" });
 
   function handleCopy(text?: string) {
@@ -23,16 +18,16 @@ const ComponentActions = ({ component, prompt, code }: Props) => {
     navigator.clipboard.writeText(text);
   }
 
-  const cmd = getCmd(`${ROUTES.r}/${component}-demo.json`, true)[
-    tab?.label || "npm"
-  ];
+  const cmd = component
+    ? getCmd(`${ROUTES.r}/${component}-demo.json`, true)[tab?.label || "npm"]
+    : undefined;
 
   return (
     <>
-      <div className="fixed bottom-12 left-12">
+      <div className="fixed bottom-12 left-12 z-102">
         <Controller />
       </div>
-      <div className="fixed right-12 bottom-12">
+      <div className="fixed right-12 bottom-12 z-102">
         <BouncyMenu
           items={[
             {
@@ -58,6 +53,7 @@ const ComponentActions = ({ component, prompt, code }: Props) => {
               icon: <Icon name="V0" />,
               label: "Open in V0",
               click: () =>
+                component &&
                 openInNewTab(
                   `https://v0.dev/chat/api/open?url=${DOMAIN}/r/${component}-demo.json`,
                 ),

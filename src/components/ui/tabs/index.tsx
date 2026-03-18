@@ -82,7 +82,7 @@ const ENTER_ANI: MotionProps = {
     initial: { opacity: 0, filter: "blur(4px)" },
     animate: { opacity: 1, filter: "blur(0px)" },
   },
-  initial: "initial",
+  initial: false,
   animate: "animate",
 };
 
@@ -117,7 +117,7 @@ const Tabs = <T extends string | number>({
 
   const container = useRef<HTMLDivElement>(null);
   const activeEle = useRef<HTMLDivElement>(null);
-  const hasMounted = useRef(false);
+  const prevDeps = useRef(deps?.toString());
 
   const l = useSpring(0, { bounce: d.sBoun, visualDuration: d.sDur });
   const r = useSpring(100, { bounce: d.sBoun, visualDuration: d.sDur });
@@ -162,10 +162,9 @@ const Tabs = <T extends string | number>({
   // Deps change animation
   // --------------------------------------------------
   useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-      return;
-    }
+    const current = deps?.toString();
+    if (prevDeps.current === current) return;
+    prevDeps.current = current;
     handlePress();
   }, [deps?.toString()]);
 

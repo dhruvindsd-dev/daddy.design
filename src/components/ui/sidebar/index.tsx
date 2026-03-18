@@ -1,4 +1,5 @@
 "use client";
+import useAudio from "@/hooks/use-audio";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
 import { COMP_METADATA } from "@/registry";
@@ -77,6 +78,8 @@ const ANI: MotionProps = {
 const Sidebar = ({}: Props) => {
   const { sidebar_visible } = useControlsStore();
   const path = usePathname();
+  const hover = useAudio("hover");
+  const click = useAudio("click");
 
   const activeComp = path.split("/").pop();
   const data = Object.values(COMP_METADATA);
@@ -98,18 +101,31 @@ const Sidebar = ({}: Props) => {
                     data.length > 8 && "scroll-fade-y",
                   )}
                 >
-                  <div className="flex flex-col items-start gap-1.5">
+                  <div className="flex flex-col items-start gap-1.5 pr-5">
                     {data.map((i, idx) => (
-                      <Link
+                      <motion.div
+                        className="origin-left"
                         key={idx}
-                        href={`/components/${i.slug}`}
-                        className={cn(
-                          "text-ds-text-disabled hover:text-ds-text-3 cursor-pointer text-sm font-medium transition-colors duration-100",
-                          i.slug === activeComp && "text-ds-text-2",
-                        )}
+                        // whileHover={{ x: 4 }}
+                        whileTap={{ scaleX: 1.05, scaleY: 0.9 }}
+                        transition={{
+                          type: "spring",
+                          visualDuration: 0.15,
+                          bounce: 0.2,
+                        }}
                       >
-                        {i.title}
-                      </Link>
+                        <Link
+                          href={`/components/${i.slug}`}
+                          onMouseEnter={() => hover()}
+                          onClick={() => click()}
+                          className={cn(
+                            "text-ds-text-disabled hover:text-ds-text-3 cursor-pointer text-sm font-medium transition-colors duration-100",
+                            i.slug === activeComp && "text-ds-text-2",
+                          )}
+                        >
+                          {i.title}
+                        </Link>
+                      </motion.div>
                     ))}
                   </div>
                 </div>

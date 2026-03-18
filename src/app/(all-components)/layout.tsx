@@ -1,3 +1,4 @@
+import ComponentActions from "@/components/sections/component-actions";
 import ComponentBg from "@/components/sections/component-bg";
 import KbdHandler from "@/components/sections/kbd-handler";
 import Logo from "@/components/ui/logo";
@@ -17,6 +18,7 @@ const Index = ({ children }: Props) => {
         <Logo withText />
       </div>
       <ComponentBg />
+      <ComponentActions />
       <section className="z-100">{children}</section>
     </div>
   );
