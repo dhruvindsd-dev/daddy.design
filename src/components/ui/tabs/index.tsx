@@ -1,14 +1,14 @@
 "use client";
 
-import usePress from "@/hooks/use-press";
 import useAudio from "@/hooks/use-audio";
+import usePress from "@/hooks/use-press";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import {
-    useSpring,
-    useMotionTemplate,
-    motion,
-    MotionProps,
+  motion,
+  MotionProps,
+  useMotionTemplate,
+  useSpring,
 } from "motion/react";
 import { useEffect, useRef } from "react";
 
@@ -31,6 +31,8 @@ interface TabsProps<T extends string | number> {
   size?: "default" | "lg";
   variant?: "default" | "light";
   hoverNudge?: number;
+  disableSound?: boolean;
+  deps?: any[];
   dur?: {
     press?: number;
     pressNormalze?: number;
@@ -95,6 +97,8 @@ const Tabs = <T extends string | number>({
   hoverNudge = 4,
   size = "default",
   variant = "default",
+  disableSound = false,
+  deps,
 }: TabsProps<T>) => {
   // --------------------------------------------------
   // derived durations
@@ -113,6 +117,7 @@ const Tabs = <T extends string | number>({
 
   const container = useRef<HTMLDivElement>(null);
   const activeEle = useRef<HTMLDivElement>(null);
+  const hasMounted = useRef(false);
 
   const l = useSpring(0, { bounce: d.sBoun, visualDuration: d.sDur });
   const r = useSpring(100, { bounce: d.sBoun, visualDuration: d.sDur });
@@ -154,10 +159,21 @@ const Tabs = <T extends string | number>({
   }
 
   // --------------------------------------------------
+  // Deps change animation
+  // --------------------------------------------------
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    handlePress();
+  }, [deps?.toString()]);
+
+  // --------------------------------------------------
   // Click Handler
   // --------------------------------------------------
   function onClick(v: TabsItem<T>) {
-    click();
+    if (!disableSound) click();
     handlePress();
     setValue(v);
   }

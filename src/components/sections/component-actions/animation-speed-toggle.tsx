@@ -1,5 +1,6 @@
 "use client";
 import Tabs from "@/components/ui/tabs";
+import useAudio from "@/hooks/use-audio";
 import useComponentName from "@/hooks/use-component-name";
 import { COMP_DATA } from "@/registry";
 import useDurationStore from "@/stores/duration-store";
@@ -25,6 +26,9 @@ const AniSpeedToggle = () => {
   const compName = useComponentName();
   const value = DURATIONS.find((d) => d.value === duration) || DURATIONS[0];
 
+  const speedUp = useAudio("speed-up");
+  const speedDown = useAudio("speed-down");
+
   const data = compName ? COMP_DATA[compName] : null;
 
   const showToggle = !!!data?.diaableSpeedToggle;
@@ -35,9 +39,15 @@ const AniSpeedToggle = () => {
         {showToggle && (
           <motion.div {...ANI} key="ani-speed-toggle">
             <Tabs
+              deps={[duration]}
               items={DURATIONS}
               value={value}
-              setValue={(v) => setDuration(v.value)}
+              disableSound
+              setValue={(v) => {
+                if (v.value === 1) speedUp();
+                else speedDown();
+                setDuration(v.value);
+              }}
             />
           </motion.div>
         )}

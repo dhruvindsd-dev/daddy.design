@@ -172,23 +172,12 @@ export function SoundEffectsProvider({ children }: PropsWithChildren) {
 
         const playAudioBuffer = (audioBuffer: AudioBuffer) => {
           if (mutedRef.current) return;
+          // Drop playback if the context isn't running yet.
+          // The unlock listener will resume it on the next real user gesture,
+          // so we avoid queuing sounds that all fire at once on first click.
+          if (audioContext.state !== "running") return;
 
-          const start = () => {
-            if (mutedRef.current) return;
-            startPlayback(audioContext, audioBuffer, effectConfig.gain);
-          };
-
-          if (audioContext.state !== "running") {
-            void audioContext
-              .resume()
-              .then(() => {
-                if (audioContext.state === "running") start();
-              })
-              .catch(() => {});
-            return;
-          }
-
-          start();
+          startPlayback(audioContext, audioBuffer, effectConfig.gain);
         };
 
         const cachedAudioBuffer = audioBufferCache.get(soundEffect);

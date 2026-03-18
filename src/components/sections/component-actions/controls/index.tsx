@@ -1,12 +1,16 @@
 "use client";
 import BouncyMenu from "@/components/ui/bouncy-menu";
 import Icon from "@/components/ui/icon";
+import useAudio from "@/hooks/use-audio";
 import useControlsStore from "@/stores/controls-store";
-import SidebarAni from "./sidebar-ani";
 import MuteAni from "./mute-ani";
+import SidebarAni from "./sidebar-ani";
 
 const Controller = () => {
   const { trigger, sidebar_visible, muted, isHydrated } = useControlsStore();
+  const playToggleOn = useAudio("toggle_on");
+  const playToggleOff = useAudio("toggle_off");
+  console.log("sidebar_visible:", sidebar_visible);
 
   return (
     <>
@@ -16,7 +20,12 @@ const Controller = () => {
           {
             icon: isHydrated ? <SidebarAni open={sidebar_visible} /> : null,
             label: "Toggle Sidebar",
-            click: () => trigger("sidebar_visible"),
+            disableSound: true,
+            click: () => {
+              if (sidebar_visible) playToggleOff();
+              else playToggleOn();
+              trigger("sidebar_visible");
+            },
           },
           {
             icon: isHydrated ? <MuteAni muted={muted} /> : null,

@@ -1,14 +1,14 @@
 "use client";
-import usePress from "@/hooks/use-press";
 import useAudio from "@/hooks/use-audio";
+import usePress from "@/hooks/use-press";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
 import {
-    AnimatePresence,
-    motion,
-    useMotionTemplate,
-    useSpring,
-    Variants,
+  AnimatePresence,
+  motion,
+  useMotionTemplate,
+  useSpring,
+  Variants,
 } from "motion/react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -21,6 +21,7 @@ interface Props {
     kbd?: string;
     click?: () => void;
     action?: "copy";
+    disableSound?: boolean;
   }[];
   deps?: any[];
   dur?: {
@@ -63,6 +64,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   const activeTooltipItemRef = useRef<HTMLDivElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const activeMenuItemRef = useRef<HTMLButtonElement>(null);
+  const hasMounted = useRef(false);
 
   const x = useSpring(0, { bounce: d.sBoun, visualDuration: d.sDur });
 
@@ -129,17 +131,20 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   }
 
   useEffect(() => {
-    if (!counter) return;
-    handleClick();
-  }, [deps?.toString(), counter]);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    handlePress();
+  }, [deps?.toString()]);
 
   function handleLeave() {
     setHover(undefined);
     setCopyState("normal");
   }
 
-  function handleClick() {
-    playClickBounce();
+  function handleClick(item?: Props["items"][number]) {
+    if (!item?.disableSound) playClickBounce();
     handlePress();
   }
 
@@ -212,6 +217,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
             return (
               <button
                 onClick={() => {
+                  handleClick(i);
                   i.click?.();
                   setCounter((c) => c + 1);
                   setCopyState("copied");

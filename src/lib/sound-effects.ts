@@ -5,9 +5,10 @@ export const SOUND_EFFECTS = {
   },
   "click-bounce": {
     gain: 0.6,
-    src: "/assets/sounds/click-bounce.mp3",
+    src: "/assets/sounds/click-bounce-2.wav",
 
-    // src: "/assets/Pop.mp3",
+    // src: "/assets/click.mp3",
+    // src: "/assets/drop_004.wav",
   },
   hover: {
     gain: 0.15,
@@ -16,6 +17,22 @@ export const SOUND_EFFECTS = {
   success: {
     gain: 0.6,
     src: "/assets/sounds/success.wav",
+  },
+  toggle_off: {
+    gain: 0.4,
+    src: "/assets/sounds/toggle_off.wav",
+  },
+  toggle_on: {
+    gain: 0.4,
+    src: "/assets/sounds/toggle_on.wav",
+  },
+  "speed-down": {
+    gain: 0.4,
+    src: "/assets/sounds/speed-down.wav",
+  },
+  "speed-up": {
+    gain: 0.4,
+    src: "/assets/sounds/speed-up.wav",
   },
 } as const;
 
