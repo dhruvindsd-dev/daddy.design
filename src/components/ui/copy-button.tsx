@@ -145,7 +145,9 @@ const CopyButton = ({ value, elementId }: Props) => {
                 exit={{ opacity: 0, filter: "blur(4px)", scale: 0.8 }}
                 className="bg-ds-bg-100 absolute inset-1 flex items-center justify-center rounded-full"
               >
-                Copied!
+                <span className="hidden sm:inline">Copied!</span>
+
+                <Icon className="block sm:hidden" name="CHECK" size={14} />
               </motion.span>
             )}
           </AnimatePresence>
@@ -159,7 +161,7 @@ const CopyButton = ({ value, elementId }: Props) => {
             className="inline-flex items-center gap-1"
           >
             <Icon name="COPY" size={14} />
-            Copy
+            <span className="hidden sm:inline">Copy</span>
           </motion.span>
         </motion.div>
       </MotionConfig>

@@ -10,7 +10,7 @@ interface Props {
 
 const ComponentContent = ({ component, propsTableData, attibution }: Props) => {
   return (
-    <div>
+    <div className="mx-auto mt-20 max-w-3xl px-4 sm:px-0">
       <Installation component={component} />
 
       <div className="mt-40" />

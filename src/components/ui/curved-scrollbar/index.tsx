@@ -240,6 +240,7 @@ const CurvedScroller = ({
     content.current.scrollTo({
       // scroll 10%
       top,
+      left: 0,
       behavior: "smooth",
     });
   }
@@ -276,7 +277,7 @@ const CurvedScroller = ({
           />
         </svg>
 
-        <div className="relative bg-ds-bg-100 rounded-[12px]">
+        <div className="bg-ds-bg-100 relative rounded-[12px]">
           <motion.button
             onClick={handleViewMoreClick}
             className="text-ds-text-3 absolute right-2 bottom-2 z-10000 flex h-6 w-24 cursor-pointer items-end justify-end rounded-full px-1 text-right text-[10px] text-nowrap"
