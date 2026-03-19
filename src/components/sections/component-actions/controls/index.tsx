@@ -11,29 +11,28 @@ const Controller = () => {
   const playToggleOn = useAudio("toggle_on");
   const playToggleOff = useAudio("toggle_off");
 
+  const items = [
+    {
+      icon: isHydrated ? <SidebarAni open={sidebar_visible} /> : null,
+      label: "Toggle Sidebar",
+      disableSound: true,
+      click: () => {
+        if (sidebar_visible) playToggleOff();
+        else playToggleOn();
+        trigger("sidebar_visible");
+      },
+    },
+    {
+      icon: isHydrated ? <MuteAni muted={muted} /> : null,
+      label: "Mute",
+      click: () => trigger("muted"),
+    },
+    { icon: <Icon name="X" />, label: "Info" },
+  ];
+
   return (
     <>
-      <BouncyMenu
-        deps={[sidebar_visible, muted]}
-        items={[
-          {
-            icon: isHydrated ? <SidebarAni open={sidebar_visible} /> : null,
-            label: "Toggle Sidebar",
-            disableSound: true,
-            click: () => {
-              if (sidebar_visible) playToggleOff();
-              else playToggleOn();
-              trigger("sidebar_visible");
-            },
-          },
-          {
-            icon: isHydrated ? <MuteAni muted={muted} /> : null,
-            label: "Mute",
-            click: () => trigger("muted"),
-          },
-          { icon: <Icon name="X" />, label: "Info" },
-        ]}
-      />
+      <BouncyMenu deps={[sidebar_visible, muted]} items={items} />
     </>
   );
 };
