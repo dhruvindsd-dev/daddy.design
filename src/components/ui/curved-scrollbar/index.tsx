@@ -245,7 +245,7 @@ const CurvedScroller = ({
   }
 
   return (
-    <div className="border-ds-border relative h-full w-full rounded-[28px] border bg-red-500/10">
+    <div className="border-ds-border relative h-full w-full rounded-[28px] border">
       <div className="relative overflow-hidden p-4">
         <svg
           ref={svg}

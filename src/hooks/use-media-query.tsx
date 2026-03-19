@@ -45,5 +45,5 @@ export function useMediaQuery(
 }
 
 export function useIsMobile(initialVal?: boolean) {
-  return useMediaQuery("mobile", initialVal);
+  return useMediaQuery("sm", initialVal);
 }

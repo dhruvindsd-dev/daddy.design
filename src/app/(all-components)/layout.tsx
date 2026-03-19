@@ -11,7 +11,7 @@ interface Props {
 
 const Index = ({ children }: Props) => {
   return (
-    <div className="relative flex min-h-screen min-w-screen items-center justify-center overflow-x-hidden">
+    <div className="relative flex min-h-screen w-full min-w-0 items-center justify-center overflow-x-hidden">
       <KbdHandler />
       <Sidebar />
       <div className="fixed top-4 left-4 z-101 sm:top-12 sm:left-12">
@@ -19,7 +19,7 @@ const Index = ({ children }: Props) => {
       </div>
       <ComponentBg />
       <ComponentActions />
-      <section className="z-100">{children}</section>
+      <section className="z-100 w-full min-w-0">{children}</section>
     </div>
   );
 };
