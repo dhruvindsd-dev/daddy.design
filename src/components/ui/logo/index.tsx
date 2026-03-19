@@ -91,7 +91,7 @@ const Logo = ({ withText, large, className }: Props) => {
     <div
       onClick={() => store.trigger("wink")}
       className={cn(
-        "text-ds-text-1 flex items-center gap-3 py-1",
+        "text-ds-text-1 flex items-center gap-3",
         large && "gap-4",
       )}
     >

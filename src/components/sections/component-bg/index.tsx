@@ -29,7 +29,7 @@ const ComponentBg = () => {
       >
         <div
           ref={ref}
-          className="bg-ds-bg-100 border-ds-border/60 absolute inset-6 rounded-[32px] border"
+          className="bg-ds-bg-100 border-ds-border/60 absolute inset-2 rounded-2xl border sm:inset-6 sm:rounded-[32px]"
         />
         <button
           onClick={() =>

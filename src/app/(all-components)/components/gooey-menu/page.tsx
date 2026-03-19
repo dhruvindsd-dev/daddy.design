@@ -5,11 +5,11 @@ import GooeyMenuDemo from "@/registry/gooey-menu/demo";
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative h-screen w-screen flex items-center justify-center">
+      <div className="relative flex h-screen w-screen items-center justify-center">
         <GooeyMenuDemo />
       </div>
 
-      <div className="mx-auto mt-20 max-w-3xl">
+      <div className="mx-auto mt-20 max-w-3xl px-4 sm:px-0">
         <ComponentContent
           component={COMPS.GOOEY_MENU}
           propsTableData={[
@@ -18,7 +18,8 @@ const Index = () => {
               type: "MenuItem[]",
               default_value: "required",
               description: "Menu items rendered as animated action buttons.",
-              type_info: "\`{ icon: React.ReactElement; name?: string; metadata?: any; value?: any; }\`",
+              type_info:
+                "\`{ icon: React.ReactElement; name?: string; metadata?: any; value?: any; }\`",
             },
             {
               name: "className",

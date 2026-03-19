@@ -10,7 +10,6 @@ const Controller = () => {
   const { trigger, sidebar_visible, muted, isHydrated } = useControlsStore();
   const playToggleOn = useAudio("toggle_on");
   const playToggleOff = useAudio("toggle_off");
-  console.log("sidebar_visible:", sidebar_visible);
 
   return (
     <>

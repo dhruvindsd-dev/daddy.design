@@ -24,10 +24,10 @@ const ComponentActions = () => {
 
   return (
     <>
-      <div className="fixed bottom-12 left-12 z-102">
+      <div className="fixed bottom-5 left-4 z-102 sm:bottom-12 sm:left-12">
         <Controller />
       </div>
-      <div className="fixed right-12 bottom-12 z-102">
+      <div className="fixed right-4 bottom-5 z-102 sm:right-12 sm:bottom-12">
         <BouncyMenu
           items={[
             {

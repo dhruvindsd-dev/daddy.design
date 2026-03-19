@@ -166,6 +166,10 @@ body {
   counter-reset: step-counter;
   margin-left: 48px;
   position: relative;
+
+  @variant max-sm {
+    margin-left: 0;
+  }
 }
 
 @utility step-line {
@@ -280,7 +284,7 @@ body {
 }
 
 @utility table {
-  @apply outline-ds-border w-max overflow-hidden rounded-xl text-sm outline sm:w-full;
+  @apply outline-ds-border w-full overflow-hidden rounded-xl text-sm outline;
 
   th,
   td {

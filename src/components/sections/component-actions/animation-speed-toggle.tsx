@@ -34,7 +34,7 @@ const AniSpeedToggle = () => {
   const showToggle = !!!data?.diaableSpeedToggle;
 
   return (
-    <div className="absolute top-12 right-12 z-102 flex flex-col gap-3">
+    <div className="absolute top-4 right-4 z-102 flex flex-col gap-3 sm:top-12 sm:right-12">
       <AnimatePresence initial={false}>
         {showToggle && (
           <motion.div {...ANI} key="ani-speed-toggle">

@@ -1,7 +1,7 @@
 import ComponentActions from "@/components/sections/component-actions";
 import ComponentBg from "@/components/sections/component-bg";
 import KbdHandler from "@/components/sections/kbd-handler";
-import Logo from "@/components/ui/logo";
+import ResponsiveLogo from "@/components/ui/logo/responsive-logo";
 import Sidebar from "@/components/ui/sidebar";
 import React from "react";
 
@@ -14,8 +14,8 @@ const Index = ({ children }: Props) => {
     <div className="relative flex min-h-screen min-w-screen items-center justify-center overflow-x-hidden">
       <KbdHandler />
       <Sidebar />
-      <div className="fixed top-12 left-12 z-101">
-        <Logo withText />
+      <div className="fixed top-4 left-4 z-101 sm:top-12 sm:left-12">
+        <ResponsiveLogo />
       </div>
       <ComponentBg />
       <ComponentActions />
