@@ -1,5 +1,6 @@
 "use client";
 import useAudio from "@/hooks/use-audio";
+import { useIsMobile } from "@/hooks/use-media-query";
 import usePress from "@/hooks/use-press";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
@@ -54,6 +55,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
 
   const playClickBounce = useAudio("click-bounce");
   const playHover = useAudio("hover");
+  const isMobile = useIsMobile();
   const { isActive, handlePress } = usePress(d.press);
   const [hover, setHover] = useState<Props["items"][number]>();
   const [jump, setJump] = useState(true);
@@ -126,6 +128,7 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
   }
 
   function handleMouseEnter(i: Props["items"][number]) {
+    if (isMobile) return;
     playHover();
     handleEnter(i);
   }
@@ -161,41 +164,43 @@ const BouncyMenu = ({ items, dur, deps }: Props) => {
       }
       ref={menuContainerRef}
     >
-      <motion.div
-        variants={ClipVariants}
-        initial="initial"
-        animate={hover ? "animate" : "exit"}
-        custom={isActive}
-        className="pointer-events-none absolute -top-10 left-0 select-none"
-      >
+      {!isMobile && (
         <motion.div
-          style={{ x, clipPath: clip }}
-          className="bg-ds-primary flex items-center gap-0 px-4"
-          ref={tooltipContainerRef}
+          variants={ClipVariants}
+          initial="initial"
+          animate={hover ? "animate" : "exit"}
+          custom={isActive}
+          className="pointer-events-none absolute -top-10 left-0 select-none"
         >
-          {items.map((i) => (
-            <div
-              key={i.label}
-              ref={i.label === hover?.label ? activeTooltipItemRef : null}
-              className={cn(
-                "text-ds-primary-text relative rounded-[10px] px-2.5 py-2 font-mono text-xs font-semibold whitespace-nowrap",
-                "origin-top transition-all duration-[var(--dpn)] ease-[ease]",
-                "flex items-center gap-2",
-                isActive &&
-                  i.label === hover?.label &&
-                  "translate-y-[-4px]! scale-x-[0.95] scale-y-[1.1]! duration-[var(--dp)]!",
-              )}
-            >
-              {i.label}{" "}
-              {i.kbd && (
-                <span className="outline-ds-primary-light/40 flex size-4 items-center justify-center rounded-[4px] text-[10px] outline">
-                  {i.kbd}
-                </span>
-              )}
-            </div>
-          ))}
+          <motion.div
+            style={{ x, clipPath: clip }}
+            className="bg-ds-primary flex items-center gap-0 px-4"
+            ref={tooltipContainerRef}
+          >
+            {items.map((i) => (
+              <div
+                key={i.label}
+                ref={i.label === hover?.label ? activeTooltipItemRef : null}
+                className={cn(
+                  "text-ds-primary-text relative rounded-[10px] px-2.5 py-2 font-mono text-xs font-semibold whitespace-nowrap",
+                  "origin-top transition-all duration-[var(--dpn)] ease-[ease]",
+                  "flex items-center gap-2",
+                  isActive &&
+                    i.label === hover?.label &&
+                    "translate-y-[-4px]! scale-x-[0.95] scale-y-[1.1]! duration-[var(--dp)]!",
+                )}
+              >
+                {i.label}{" "}
+                {i.kbd && (
+                  <span className="outline-ds-primary-light/40 flex size-4 items-center justify-center rounded-[4px] text-[10px] outline">
+                    {i.kbd}
+                  </span>
+                )}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
 
       <div className="bg-ds-primary-shadow absolute inset-0 translate-y-1 rounded-full" />
       <div

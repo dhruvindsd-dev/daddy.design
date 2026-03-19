@@ -1,6 +1,7 @@
 "use client";
 
 import useAudio from "@/hooks/use-audio";
+import { useIsMobile } from "@/hooks/use-media-query";
 import usePress from "@/hooks/use-press";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
@@ -113,6 +114,7 @@ const Tabs = <T extends string | number>({
 
   const click = useAudio("click-bounce");
   const hover = useAudio("hover");
+  const isMobile = useIsMobile();
   const { isActive, handlePress } = usePress(d.press);
 
   const container = useRef<HTMLDivElement>(null);
@@ -181,6 +183,7 @@ const Tabs = <T extends string | number>({
   // Hover Nudging
   // --------------------------------------------------
   function handleHover(idx: number) {
+    if (isMobile) return;
     if (hoverNudge <= 0) return;
 
     const currentIdx = items.findIndex((i) => i.value === value.value);
@@ -261,7 +264,7 @@ const Tabs = <T extends string | number>({
               onClick={() => onClick(i)}
               onMouseEnter={() => {
                 handleHover(idx);
-                hover();
+                if (!isMobile) hover();
               }}
               onMouseLeave={normalizeClip}
               onFocus={() => handleHover(idx)}

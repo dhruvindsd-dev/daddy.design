@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const IS_CLIENT = typeof window === "object";
 
@@ -7,30 +7,39 @@ const mediaQueryMap = {
   mobile: "(max-width: 768px)",
   touch: "(max-width: 1200px)",
 
-  sm: "max-width: 640px",
-  md: "max-width: 768px",
-  lg: "max-width: 1024px",
-  xl: "max-width: 1280px",
-  "2xl": "max-width: 1536px",
+  sm: "(max-width: 640px)",
+  md: "(max-width: 768px)",
+  lg: "(max-width: 1024px)",
+  xl: "(max-width: 1280px)",
+  "2xl": "(max-width: 1536px)",
 };
 
 export function useMediaQuery(
   query: keyof typeof mediaQueryMap,
-  initialVal = IS_CLIENT && window.matchMedia(query).matches,
+  initialVal?: boolean,
 ) {
-  const [matches, setMatches] = useState(initialVal);
+  const [matches, setMatches] = useState(() => {
+    if (typeof initialVal === "boolean") return initialVal;
+    if (!IS_CLIENT) return false;
+    return window.matchMedia(mediaQueryMap[query]).matches;
+  });
 
   useEffect(() => {
     const media = window.matchMedia(mediaQueryMap[query]);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = () => {
-      setMatches(media.matches);
+    setMatches(media.matches);
+
+    const listener = (event: MediaQueryListEvent) => {
+      setMatches(event.matches);
     };
+
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", listener);
+      return () => media.removeEventListener("change", listener);
+    }
+
     media.addListener(listener);
     return () => media.removeListener(listener);
-  }, [matches, query]);
+  }, [query]);
 
   return matches;
 }
