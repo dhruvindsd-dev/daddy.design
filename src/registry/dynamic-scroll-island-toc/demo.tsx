@@ -97,14 +97,14 @@ const DynamicScrollIslandTocDemo = () => {
           />
         </div>
 
-        <div className="relative mt-8 w-[600px]">
-          <div className="scroll-fade-y h-[500px] overflow-scroll" ref={ref}>
+        <div className="relative mt-8 w-full max-w-[600px]">
+          <div className="scroll-fade-y h-[200px] sm:h-[500px] overflow-scroll" ref={ref}>
             <div>
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={active.value}
                   className={cn(
-                    "grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] 2xl:grid-cols-4",
+                    "grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] 2xl:grid-cols-4",
                     "[mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)] [mask-size:100%_300%] [mask-repeat:no-repeat]",
                   )}
                   {...animation}
