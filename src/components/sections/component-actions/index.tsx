@@ -17,7 +17,7 @@ import Controller from "./controls";
 import SpeedAni from "./controls/speed-ani";
 
 const ComponentActions = () => {
-  const { component, prompt, code } = useComponentActionsStore();
+  const { component, prompt, code, nextCount } = useComponentActionsStore();
   const { duration, setDuration } = useDurationStore();
   const [tab] = useLocalStorage<any>({ key: "cli-tab" });
   const mobile = useMediaQuery("sm", true);
@@ -110,7 +110,7 @@ const ComponentActions = () => {
         <Controller />
       </div>
       <div className="fixed right-4 bottom-5 z-102 sm:right-12 sm:bottom-12">
-        <BouncyMenu deps={[duration]} items={rightItems} />
+        <BouncyMenu items={rightItems} deps={[nextCount]} />
       </div>
       {!mobile && <AniSpeedToggle />}
     </>
