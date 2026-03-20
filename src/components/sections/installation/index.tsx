@@ -90,13 +90,21 @@ function Manual({
 
       <StepContent>
         <Step>Create a file for utility functions</Step>
-        <FileName>lib/utils.ts</FileName>
+        <FileName>
+          <span className="opacity-80"> lib</span>
+          <span className="text-ds-text-1 font-bold">/utils.ts </span>
+        </FileName>
         <SourceUtilsCode />
       </StepContent>
 
       <StepContent>
         <Step>Copy Source Code</Step>
-        <FileName>components/ui/{slug}/index.tsx</FileName>
+        <FileName>
+          <span className="min-w-0 truncate opacity-80">
+            components/ui/{slug}
+          </span>
+          <span className="text-ds-text-1 shrink-0 font-bold">/index.tsx</span>
+        </FileName>
         <Code code={mCode} />
       </StepContent>
 
@@ -107,7 +115,13 @@ function Manual({
             Optional
           </code>
         </Step>
-        <FileName>components/ui/{slug}/demo.tsx</FileName>
+        <FileName>
+          <span className="min-w-0 truncate opacity-80">
+            components/ui/{slug}
+          </span>
+          <span className="text-ds-text-1 shrink-0 font-bold">/demo.tsx</span>
+        </FileName>
+
         <Code code={dCode} />
       </StepContent>
     </Steps>

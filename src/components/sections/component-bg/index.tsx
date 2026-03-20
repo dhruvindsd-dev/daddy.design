@@ -40,7 +40,7 @@ const ComponentBg = () => {
           }
           className={cn(
             "text-ds-text-3 pointer-events-none flex items-center gap-1 text-xs font-medium tracking-tight select-none",
-            "absolute bottom-[66px] left-1/2 -translate-x-1/2 cursor-pointer",
+            "absolute bottom-25 sm:bottom-[66px] left-1/2 -translate-x-1/2 cursor-pointer",
             classes.vertical_mask_animation,
           )}
         >

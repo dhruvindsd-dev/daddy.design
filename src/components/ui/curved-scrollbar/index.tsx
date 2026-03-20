@@ -146,17 +146,20 @@ const CurvedScroller = ({
 
     const contentEl = content.current;
     if (!contentEl) return;
-    if (contentEl.scrollHeight <= contentEl.clientHeight) {
-      svg.current?.style.setProperty("display", "none");
-      tOpac.set(0);
-      bOpac.set(0);
-      setControlsState("hidden");
-    } else {
-      svg.current?.style.setProperty("display", "block");
+    if (contentEl.scrollHeight > contentEl.clientHeight) {
+      vThumb.current?.style.setProperty("display", "block");
       tOpac.set(0);
       bOpac.set(1);
       setControlsState("view-more");
+    } else {
+      vThumb.current?.style.setProperty("display", "none");
+      tOpac.set(0);
+      bOpac.set(0);
+      setControlsState("hidden");
     }
+    if (contentEl.scrollWidth > contentEl.clientWidth)
+      hThumb.current?.style.setProperty("display", "block");
+    else hThumb.current?.style.setProperty("display", "none");
   };
 
   useEffect(() => {
@@ -175,8 +178,8 @@ const CurvedScroller = ({
       const scrollHeight = target.scrollHeight;
       const clientHeight = target.clientHeight;
 
-      const vPro = scrollTop / (scrollHeight - clientHeight);
-      const offV = compV.start + (compV.end - compV.start) * vPro;
+      const vPro = scrollTop / (scrollHeight - clientHeight); // vertical progress
+      const offV = compV.start + (compV.end - compV.start) * vPro; // vertical offset
 
       const scrollLeft = target.scrollLeft;
       const scrollWidth = target.scrollWidth;
@@ -191,12 +194,14 @@ const CurvedScroller = ({
       if (vPro > 0) tOpac.set(1);
       else tOpac.set(0);
 
-      if (vPro >= 1) {
-        bOpac.set(0);
-        setControlsState("back-to-top");
-      } else {
-        bOpac.set(1);
-        setControlsState("view-more");
+      if (contentEl.scrollHeight > contentEl.clientHeight) {
+        if (vPro === 1) {
+          bOpac.set(0);
+          setControlsState("back-to-top");
+        } else {
+          bOpac.set(1);
+          setControlsState("view-more");
+        }
       }
     };
 

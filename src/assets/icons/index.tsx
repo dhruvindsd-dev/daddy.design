@@ -14,6 +14,7 @@ import CHEVRON_DOWN_DOUBE_MICRO from "./chevron-down-doube-micro.svg";
 import QUESTION from "./question.svg";
 import INFO_OUTLINE from "./info-outline.svg";
 import CIRCLE_ARROW_RIGHT from "./circle-arrow-right.svg";
+import SM_CHEVRON_DOWN from "./sm-chevron-down.svg";
 
 import VIBE_CODING from "./vibe-coding.svg";
 import COPY_2 from "./copy-2.svg";
@@ -36,6 +37,7 @@ const ICONS = {
   CIRCLE_ARROW_RIGHT,
   VIBE_CODING,
   COPY_2,
+  SM_CHEVRON_DOWN,
 };
 export default ICONS;
 

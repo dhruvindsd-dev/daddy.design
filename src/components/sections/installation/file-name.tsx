@@ -70,7 +70,7 @@ const FileName = ({ children, className }: Props) => {
 
   return (
     <button
-      className="group/inline-code"
+      className="group/inline-code max-w-full"
       onMouseEnter={() => hover()}
       onMouseLeave={() => {
         setState("normal");
@@ -80,12 +80,14 @@ const FileName = ({ children, className }: Props) => {
       <motion.div
         style={{ scaleX: x, scaleY: y }}
         className={cn(
-          "relative origin-bottom cursor-pointer overflow-hidden rounded-md font-mono text-xs font-bold select-none",
+          "relative origin-bottom cursor-pointer overflow-hidden rounded-md font-mono text-xs font-semibold select-none",
           "bg-ds-bg-100 text-ds-text-2 border-ds-border border px-1.5 py-1",
           className,
         )}
       >
-        <span id={id}>{children}</span>
+        <span id={id} className="flex min-w-0">
+          {children}
+        </span>
         <div
           className={cn(
             "pointer-events-none absolute top-0 right-0 flex h-full items-center opacity-0 transition-opacity duration-300 group-hover/inline-code:opacity-100",
