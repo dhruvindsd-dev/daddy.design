@@ -1,13 +1,14 @@
 import ComponentContent from "@/components/sections/component-content";
+import ComponentWrapper from "@/components/sections/component-wrapper";
 import { COMPS } from "@/registry";
 import CoolCheckBoxDemo from "@/registry/cool-checkbox/demo";
 
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative flex h-screen w-screen items-center justify-center">
+      <ComponentWrapper>
         <CoolCheckBoxDemo />
-      </div>
+      </ComponentWrapper>
 
       <ComponentContent
         component={COMPS.COOL_CHECKBOX}

@@ -22,7 +22,7 @@ const ComponentBg = () => {
   const blur = useMotionTemplate`blur(${b}px)`;
 
   return (
-    <div className="absolute top-0 right-0 left-0 h-screen w-screen">
+    <div className="absolute top-0 right-0 left-0 h-[70vh] w-screen sm:h-screen">
       <motion.div
         style={{ opacity, filter: blur }}
         className="relative h-full w-full"
@@ -32,15 +32,9 @@ const ComponentBg = () => {
           className="bg-ds-bg-100 border-ds-border/60 absolute inset-2 rounded-2xl border sm:inset-6 sm:rounded-[32px]"
         />
         <button
-          onClick={() =>
-            window.scrollTo({
-              top: window.innerHeight,
-              behavior: "smooth",
-            })
-          }
           className={cn(
-            "text-ds-text-3 pointer-events-none flex items-center gap-1 text-xs font-medium tracking-tight select-none",
-            "absolute bottom-25 sm:bottom-[66px] left-1/2 -translate-x-1/2 cursor-pointer",
+            "text-ds-text-3 pointer-events-none hidden items-center gap-1 text-xs font-medium tracking-tight select-none sm:flex",
+            "absolute bottom-25 left-1/2 -translate-x-1/2 cursor-pointer sm:bottom-[66px]",
             classes.vertical_mask_animation,
           )}
         >

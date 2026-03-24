@@ -1,13 +1,14 @@
 import ComponentContent from "@/components/sections/component-content";
+import ComponentWrapper from "@/components/sections/component-wrapper";
 import { COMPS } from "@/registry";
 import FamilyButtonDemo from "@/registry/family-button/demo";
 
 const Index = () => {
   return (
     <div className="relative">
-      <div className="relative flex h-screen w-screen items-center justify-center">
+      <ComponentWrapper>
         <FamilyButtonDemo />
-      </div>
+      </ComponentWrapper>
 
       <ComponentContent
         component={COMPS.FAMILY_BUTTON}

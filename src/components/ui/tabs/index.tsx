@@ -119,6 +119,7 @@ const Tabs = <T extends string | number>({
 
   const container = useRef<HTMLDivElement>(null);
   const activeEle = useRef<HTMLDivElement>(null);
+  const hasInitializedClip = useRef(false);
   const prevDeps = useRef(deps?.toString());
 
   const l = useSpring(0, { bounce: d.sBoun, visualDuration: d.sDur });
@@ -132,14 +133,16 @@ const Tabs = <T extends string | number>({
   useEffect(() => {
     const { lPerc, rPerc } = getClipValues();
 
-    const jump = l.get() === 0 && r.get() === 100;
-    if (jump) {
+    // Never animate to the initial selected tab on first paint.
+    if (!hasInitializedClip.current) {
       l.jump(lPerc);
       r.jump(rPerc);
-    } else {
-      l.set(lPerc);
-      r.set(rPerc);
+      hasInitializedClip.current = true;
+      return;
     }
+
+    l.set(lPerc);
+    r.set(rPerc);
   }, [value.value]);
 
   // --------------------------------------------------

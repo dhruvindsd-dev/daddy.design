@@ -36,7 +36,7 @@ const InstallationHoc = ({ cli, manual, vibe }: Props) => {
   const [tab, setTab] = useLocalStorage({
     key: "installation-tab",
     defaultValue: tabs[0],
-    getInitialValueInEffect: true,
+    getInitialValueInEffect: false,
   });
 
   return (
