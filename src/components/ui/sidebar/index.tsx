@@ -1,5 +1,6 @@
 "use client";
 import useAudio from "@/hooks/use-audio";
+import { useIsMobile } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { FADE_IN_ANI } from "@/lib/variants";
 import { COMP_METADATA } from "@/registry";
@@ -76,15 +77,24 @@ const ANI: MotionProps = {
 };
 
 const Sidebar = ({}: Props) => {
-  const { sidebar_visible } = useControlsStore();
+  const { sidebar_visible, trigger } = useControlsStore();
+  const isM = useIsMobile();
   const path = usePathname();
   const hover = useAudio("hover");
   const click = useAudio("click");
+  const sidebar_close = useAudio("toggle_off");
 
   const activeComp = path.split("/").pop();
   const data = Object.values(COMP_METADATA);
+
+  function handleClick() {
+    if (isM) {
+      trigger("sidebar_visible");
+      sidebar_close();
+    } else click();
+  }
   return (
-    <div className="fixed top-1/2 left-12 z-1000000 flex -translate-y-1/2 flex-col gap-8">
+    <div className="fixed top-1/2 left-0 z-101 flex -translate-y-1/2 flex-col gap-8 sm:left-12">
       <motion.div {...FADE_IN_ANI}>
         <MotionConfig
           transition={{ type: "spring", visualDuration: 0.3, bounce: 0.3 }}
@@ -92,22 +102,25 @@ const Sidebar = ({}: Props) => {
           <AnimatePresence initial={false}>
             {sidebar_visible && (
               <motion.div
-                className="origin-left will-change-transform"
+                className={cn(
+                  "origin-left rounded-r-xl border will-change-transform",
+                  "bg-ds-bg-100/98 border-ds-border/60 sm:border-0 sm:bg-transparent",
+                )}
                 {...ANI}
               >
                 <div
                   className={cn(
-                    "hide-scrollbar max-h-[430px] overflow-auto",
+                    "hide-scrollbar max-h-[50svh] overflow-auto sm:max-h-[430px]",
+                    "px-5 py-5 sm:p-0",
                     data.length > 8 && "scroll-fade-y",
                   )}
                 >
-                  <div className="flex flex-col items-start gap-1.5 pr-5">
+                  <div className="flex h-fit flex-col items-start gap-1.5 pr-5">
                     {data.map((i, idx) => (
                       <motion.div
-                        className="origin-left"
+                        className="group origin-left select-none"
                         key={idx}
-                        // whileHover={{ x: 4 }}
-                        whileTap={{ scaleX: 1.05, scaleY: 0.9 }}
+                        whileTap={isM ? {} : { scale: 0.95, x: -2 }}
                         transition={{
                           type: "spring",
                           visualDuration: 0.15,
@@ -116,11 +129,12 @@ const Sidebar = ({}: Props) => {
                       >
                         <Link
                           href={`/components/${i.slug}`}
-                          onMouseEnter={() => hover()}
-                          onClick={() => click()}
+                          onMouseEnter={() => !isM && hover()}
+                          onClick={handleClick}
                           className={cn(
-                            "text-ds-text-disabled hover:text-ds-text-3 cursor-pointer text-sm font-medium transition-colors duration-100",
-                            i.slug === activeComp && "text-ds-text-2",
+                            "text-ds-text-disabled hover:text-ds-text-3 block cursor-pointer text-sm font-medium transition-colors duration-100",
+                            "sm:group-hover:translate-x-1 transition-transform ease-out duration-200",
+                            i.slug === activeComp && "text-ds-text-2!",
                           )}
                         >
                           {i.title}
