@@ -7,10 +7,8 @@ import {
 } from "motion/react";
 import Tabs from "@/components/ui/tabs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import useMeasure from "react-use-measure";
 import Loader from "@/components/ui/loader";
 import dynamic from "next/dynamic";
-import { useIsMobile } from "@/hooks/use-media-query";
 
 const ani: MotionProps = {
   initial: "initial",
@@ -40,9 +38,6 @@ const InstallationHoc = ({ cli, manual, vibe }: Props) => {
     defaultValue: tabs[0],
     getInitialValueInEffect: true,
   });
-  const [ref, bounds] = useMeasure();
-  const height = bounds.height;
-  const mobile = useIsMobile();
 
   return (
     <MotionConfig transition={{ type: "spring", bounce: 0, duration: 0.4 }}>
@@ -58,21 +53,13 @@ const InstallationHoc = ({ cli, manual, vibe }: Props) => {
 
       <div className="mb-8"></div>
 
-      <motion.div
-        className="relative"
-        initial={false}
-        animate={{ height: mobile ? (height ? height : "auto") : "auto" }}
-      >
-        <div ref={ref} className="h-fit">
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div key={tab.value} {...ani}>
-              {tab.value === "cli" && cli}
-              {tab.value === "vibe-coding" && vibe}
-              {tab.value === "manual" && manual}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </motion.div>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.div key={tab.value} {...ani}>
+          {tab.value === "cli" && cli}
+          {tab.value === "vibe-coding" && vibe}
+          {tab.value === "manual" && manual}
+        </motion.div>
+      </AnimatePresence>
     </MotionConfig>
   );
 };

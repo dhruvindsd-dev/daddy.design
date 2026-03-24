@@ -147,7 +147,9 @@ body {
   color: hsl(var(--ds-text-1));
 
   hr {
-    @apply border-ds-border!;
+    /* @apply border-ds-border!; */
+
+    @apply border-b-ds-border! h-px border-b shadow-[0px_1px_1px_0px_rgba(255,255,255,0.4)];
   }
 }
 
