@@ -62,13 +62,6 @@ const InstallationHoc = ({ cli, manual, vibe }: Props) => {
         animate={{ height: height ? height : "auto" }}
       >
         <div ref={ref} className="h-fit">
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div key={tab.value} {...ani}>
-              {tab.value === "cli" && cli}
-              {tab.value === "vibe-coding" && vibe}
-              {tab.value === "manual" && manual}
-            </motion.div>
-          </AnimatePresence>
         </div>
       </motion.div>
     </MotionConfig>
