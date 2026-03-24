@@ -104,8 +104,8 @@ function AnimatedBlurTestimonials({
           initial={false}
           animate={{ height: bounds.height || "auto" }}
           className={cn(
-            "border-[0.5px] border-black/[0.05] bg-neutral-50",
-            "relative z-10 overflow-hidden rounded-xl",
+            "border border-black/[0.05] bg-neutral-50",
+            "relative z-10 overflow-hidden rounded-lg",
           )}
         >
           <div ref={ref} className="h-fit p-4">
@@ -114,7 +114,7 @@ function AnimatedBlurTestimonials({
                 {...ani}
                 custom={dir}
                 key={count}
-                className="font-medium text-black/60"
+                className="text-[13px] font-medium text-black/60"
                 aria-live="polite"
               >
                 {data[count].message}

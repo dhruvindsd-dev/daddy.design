@@ -38,7 +38,7 @@ function AnimatedBlurTestimonialsDemo() {
   const { duration } = useDurationStore();
 
   return (
-    <div className="max-w-[450px]">
+    <div className="w-full px-6 sm:max-w-[450px]">
       <AnimatedBlurTestimonials _duration={duration * 0.6} data={DATA} />
     </div>
   );
