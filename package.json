@@ -17,6 +17,7 @@
     "@use-gesture/react": "^10.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dialkit": "^1.1.0",
     "globby": "^16.0.0",
     "lucide-react": "^0.554.0",
     "masonic": "^4.1.0",
