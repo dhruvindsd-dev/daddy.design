@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { DialRoot } from "dialkit";
 import { SoundEffectsProvider } from "@/providers/sound-effects-provider";
+import "dialkit/styles.css";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
         <SoundEffectsProvider>{children}</SoundEffectsProvider>
+        <DialRoot />
       </body>
     </html>
   );

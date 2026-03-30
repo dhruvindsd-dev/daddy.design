@@ -12,11 +12,11 @@ interface Props {
   thumbClassName?: string;
   children?: React.ReactNode;
   disableHorizontal?: boolean;
+  framePadding?: number;
 
   config?: {
     radius?: number;
     stroke?: number;
-    inset?: number;
     trail?: number;
     thumb?: number;
     thumbOffsetEnd?: number;
@@ -39,6 +39,7 @@ const CurvedScroller = ({
   className,
   thumbClassName,
   disableHorizontal = false,
+  framePadding = 16,
   children,
 }: Props) => {
   const content = useRef<HTMLDivElement>(null);
@@ -46,14 +47,24 @@ const CurvedScroller = ({
   const vThumb = useRef<SVGPathElement>(null);
   const hThumb = useRef<SVGPathElement>(null);
 
+  const trackRadius = config.radius ?? 8;
+  const trackStroke = config.stroke ?? 5;
+  const trackTrail = config.trail ?? 16;
+  const thumbLength = config.thumb ?? 100;
+  const thumbOffsetEnd = config.thumbOffsetEnd ?? 40;
+  const shellPadding = framePadding + trackStroke;
+  const centerOffset = shellPadding * 0.5;
+  const edgeInset = Math.max(centerOffset - trackStroke * 0.5, 0);
+  const innerBorderRadius = Math.max(trackRadius - centerOffset, 0);
+  const outerBorderRadius = trackRadius + centerOffset;
+
   const c = {
-    radius: 8,
-    stroke: 5,
-    inset: 6,
-    trail: 16,
-    thumb: 100,
-    thumbOffsetEnd: 40,
-    ...config,
+    radius: trackRadius,
+    stroke: trackStroke,
+    inset: edgeInset,
+    trail: trackTrail,
+    thumb: thumbLength,
+    thumbOffsetEnd,
   };
 
   const [compV, setCompV] = useState({ start: 0, end: 0, len: 0 });
@@ -76,8 +87,8 @@ const CurvedScroller = ({
     const svgEl = svg.current;
     const { radius, stroke, inset, trail, thumb, thumbOffsetEnd } = c;
 
-    const h = contentEl.offsetHeight + 32;
-    const w = contentEl.offsetWidth + 32;
+    const h = contentEl.offsetHeight + shellPadding * 2;
+    const w = contentEl.offsetWidth + shellPadding * 2;
 
     svgEl.setAttribute("viewBox", `0 0 ${w} ${h}`);
 
@@ -114,8 +125,8 @@ const CurvedScroller = ({
     const contentEl = content.current;
     const { radius: r, stroke, inset, trail, thumb, thumbOffsetEnd } = c;
 
-    const h = contentEl.offsetHeight + 32;
-    const w = contentEl.offsetWidth + 32;
+    const h = contentEl.offsetHeight + shellPadding * 2;
+    const w = contentEl.offsetWidth + shellPadding * 2;
     const x = inset + stroke * 0.5;
     const y = h - inset - stroke * 0.5;
 
@@ -157,7 +168,10 @@ const CurvedScroller = ({
       bOpac.set(0);
       setControlsState("hidden");
     }
-    if (contentEl.scrollWidth > contentEl.clientWidth)
+    if (
+      !disableHorizontal &&
+      contentEl.scrollWidth > contentEl.clientWidth
+    )
       hThumb.current?.style.setProperty("display", "block");
     else hThumb.current?.style.setProperty("display", "none");
   };
@@ -166,8 +180,9 @@ const CurvedScroller = ({
     const contentEl = content.current;
     if (!contentEl) return;
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    calSvg();
+    const frameId = window.requestAnimationFrame(() => {
+      calSvg();
+    });
 
     const handleResize = () => calSvg();
 
@@ -177,19 +192,24 @@ const CurvedScroller = ({
       const scrollTop = target.scrollTop;
       const scrollHeight = target.scrollHeight;
       const clientHeight = target.clientHeight;
+      const maxVerticalScroll = scrollHeight - clientHeight;
 
-      const vPro = scrollTop / (scrollHeight - clientHeight); // vertical progress
+      const vPro = maxVerticalScroll > 0 ? scrollTop / maxVerticalScroll : 0;
       const offV = compV.start + (compV.end - compV.start) * vPro; // vertical offset
 
       const scrollLeft = target.scrollLeft;
       const scrollWidth = target.scrollWidth;
       const clientWidth = target.clientWidth;
+      const maxHorizontalScroll = scrollWidth - clientWidth;
 
-      const hProgress = scrollLeft / (scrollWidth - clientWidth);
+      const hProgress =
+        !disableHorizontal && maxHorizontalScroll > 0
+          ? scrollLeft / maxHorizontalScroll
+          : 0;
       const offH = compH.start + (compH.end - compH.start) * hProgress;
 
       moV.set(offV);
-      moH.set(offH);
+      if (!disableHorizontal) moH.set(offH);
 
       if (vPro > 0) tOpac.set(1);
       else tOpac.set(0);
@@ -217,6 +237,7 @@ const CurvedScroller = ({
     resizeObserver.observe(contentEl);
 
     return () => {
+      window.cancelAnimationFrame(frameId);
       window.removeEventListener("resize", handleResize);
       contentEl.removeEventListener("scroll", throttledScroll);
       resizeObserver.disconnect();
@@ -232,6 +253,7 @@ const CurvedScroller = ({
     c.trail,
     c.thumb,
     c.thumbOffsetEnd,
+    disableHorizontal,
   ]);
 
   function handleViewMoreClick() {
@@ -251,8 +273,14 @@ const CurvedScroller = ({
   }
 
   return (
-    <div className="border-ds-border relative h-full w-full rounded-[28px] border">
-      <div className="relative overflow-hidden p-4">
+    <div
+      className="border-ds-border relative h-full w-full border"
+      style={{ borderRadius: outerBorderRadius }}
+    >
+      <div
+        className="relative overflow-hidden"
+        style={{ padding: shellPadding }}
+      >
         <svg
           ref={svg}
           className="pointer-events-none absolute inset-0 top-0 right-0 bottom-0 left-0 z-10"
@@ -282,10 +310,17 @@ const CurvedScroller = ({
           />
         </svg>
 
-        <div className="bg-ds-bg-100 relative rounded-[12px]">
+        <div
+          className="bg-ds-bg-100 relative"
+          style={{ borderRadius: innerBorderRadius }}
+        >
           <motion.button
             onClick={handleViewMoreClick}
-            className="text-ds-text-3 absolute right-2 bottom-2 z-10000 flex h-6 w-24 cursor-pointer items-end justify-end rounded-full px-1 text-right text-[10px] text-nowrap"
+            className="text-ds-text-3 absolute z-10000 flex h-6 w-24 cursor-pointer items-end justify-end rounded-full px-1 text-right text-[10px] text-nowrap"
+            style={{
+              bottom: 8 + innerBorderRadius * 0.2,
+              right: 8 + innerBorderRadius * 0.2,
+            }}
           >
             <AnimatePresence mode="popLayout" initial={false}>
               {controlsState !== "hidden" && (
@@ -300,20 +335,34 @@ const CurvedScroller = ({
           <div
             ref={content}
             className={cn(
-              "hide-scrollbar bg-ds-bg-100 outline-ds-border relative w-full overflow-auto rounded-[12px] p-4 outline",
+              "hide-scrollbar bg-ds-bg-100 outline-ds-border relative w-full overflow-auto outline",
               className,
             )}
+            style={{
+              borderRadius: innerBorderRadius,
+              padding: 16 + innerBorderRadius * 0.2,
+            }}
           >
             {children}
           </div>
 
           <motion.div
-            style={{ opacity: tOpac }}
-            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 top-0 z-9 h-24 rounded-t-[12px] bg-linear-to-b to-transparent"
+            style={{
+              opacity: tOpac,
+              borderTopLeftRadius: innerBorderRadius,
+              borderTopRightRadius: innerBorderRadius,
+            }}
+            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 top-0 z-9 h-24 bg-linear-to-b to-transparent"
+            aria-hidden="true"
           />
           <motion.div
-            style={{ opacity: bOpac }}
-            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 bottom-0 z-9 h-24 rounded-b-[12px] bg-linear-to-t to-transparent"
+            style={{
+              opacity: bOpac,
+              borderBottomLeftRadius: innerBorderRadius,
+              borderBottomRightRadius: innerBorderRadius,
+            }}
+            className="from-ds-bg-100 pointer-events-none absolute inset-x-0 bottom-0 z-9 h-24 bg-linear-to-t to-transparent"
+            aria-hidden="true"
           />
         </div>
       </div>
