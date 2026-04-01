@@ -1,19 +1,15 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, useSpring } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-interface Props {
-  // Define any props you need here, for example:
-  // color?: string;
-  // radius?: number;
-
+export interface CurvedScrollbarProps {
   className?: string;
   thumbClassName?: string;
   children?: React.ReactNode;
   disableHorizontal?: boolean;
   framePadding?: number;
-
   config?: {
     radius?: number;
     stroke?: number;
@@ -24,7 +20,7 @@ interface Props {
   };
 }
 
-const ViewMoreAni: MotionProps = {
+const viewMoreAnimation: MotionProps = {
   variants: {
     hidden: { opacity: 0, filter: "blur(2px)" },
     visible: { opacity: 1, filter: "blur(0px)" },
@@ -35,14 +31,14 @@ const ViewMoreAni: MotionProps = {
   transition: { duration: 0.4, ease: "easeOut" },
 };
 
-const CurvedScroller = ({
+const CurvedScrollbar = ({
   config = {},
   className,
   thumbClassName,
   disableHorizontal = false,
   framePadding = 16,
   children,
-}: Props) => {
+}: CurvedScrollbarProps) => {
   const content = useRef<HTMLDivElement>(null);
   const svg = useRef<SVGSVGElement>(null);
   const vThumb = useRef<SVGPathElement>(null);
@@ -119,7 +115,7 @@ const CurvedScroller = ({
     moV.jump(startOffset);
   };
 
-  const synHorizontal = () => {
+  const syncHorizontal = () => {
     if (disableHorizontal) return;
     if (!content.current || !svg.current || !hThumb.current) return;
 
@@ -150,14 +146,13 @@ const CurvedScroller = ({
     moH.jump(startOffset);
   };
 
-  const calSvg = () => {
+  const calculateSvg = () => {
     syncVertical();
-    synHorizontal();
-
-    // hide svg if scrollable height is nothing
+    syncHorizontal();
 
     const contentEl = content.current;
     if (!contentEl) return;
+
     if (contentEl.scrollHeight > contentEl.clientHeight) {
       vThumb.current?.style.setProperty("display", "block");
       tOpac.set(0);
@@ -169,12 +164,12 @@ const CurvedScroller = ({
       bOpac.set(0);
       setControlsState("hidden");
     }
-    if (
-      !disableHorizontal &&
-      contentEl.scrollWidth > contentEl.clientWidth
-    )
+
+    if (!disableHorizontal && contentEl.scrollWidth > contentEl.clientWidth) {
       hThumb.current?.style.setProperty("display", "block");
-    else hThumb.current?.style.setProperty("display", "none");
+    } else {
+      hThumb.current?.style.setProperty("display", "none");
+    }
   };
 
   useEffect(() => {
@@ -182,10 +177,10 @@ const CurvedScroller = ({
     if (!contentEl) return;
 
     const frameId = window.requestAnimationFrame(() => {
-      calSvg();
+      calculateSvg();
     });
 
-    const handleResize = () => calSvg();
+    const handleResize = () => calculateSvg();
 
     const handleScroll = (event: Event) => {
       const target = event.target as HTMLDivElement;
@@ -195,8 +190,9 @@ const CurvedScroller = ({
       const clientHeight = target.clientHeight;
       const maxVerticalScroll = scrollHeight - clientHeight;
 
-      const vPro = maxVerticalScroll > 0 ? scrollTop / maxVerticalScroll : 0;
-      const offV = compV.start + (compV.end - compV.start) * vPro; // vertical offset
+      const vProgress =
+        maxVerticalScroll > 0 ? scrollTop / maxVerticalScroll : 0;
+      const offV = compV.start + (compV.end - compV.start) * vProgress;
 
       const scrollLeft = target.scrollLeft;
       const scrollWidth = target.scrollWidth;
@@ -212,11 +208,11 @@ const CurvedScroller = ({
       moV.set(offV);
       if (!disableHorizontal) moH.set(offH);
 
-      if (vPro > 0) tOpac.set(1);
+      if (vProgress > 0) tOpac.set(1);
       else tOpac.set(0);
 
       if (contentEl.scrollHeight > contentEl.clientHeight) {
-        if (vPro === 1) {
+        if (vProgress === 1) {
           bOpac.set(0);
           setControlsState("back-to-top");
         } else {
@@ -234,7 +230,7 @@ const CurvedScroller = ({
     window.addEventListener("resize", handleResize, { passive: true });
     contentEl.addEventListener("scroll", throttledScroll, { passive: true });
 
-    const resizeObserver = new ResizeObserver(() => calSvg());
+    const resizeObserver = new ResizeObserver(() => calculateSvg());
     resizeObserver.observe(contentEl);
 
     return () => {
@@ -266,7 +262,6 @@ const CurvedScroller = ({
         : content.current.scrollTop + content.current.clientHeight * 0.9;
 
     content.current.scrollTo({
-      // scroll 10%
       top,
       left: 0,
       behavior: "smooth",
@@ -278,13 +273,10 @@ const CurvedScroller = ({
       className="border-ds-border relative h-full w-full border"
       style={{ borderRadius: outerBorderRadius }}
     >
-      <div
-        className="relative overflow-hidden"
-        style={{ padding: shellPadding }}
-      >
+      <div className="relative overflow-hidden" style={{ padding: shellPadding }}>
         <svg
           ref={svg}
-          className="pointer-events-none absolute inset-0 top-0 right-0 bottom-0 left-0 z-10"
+          className="pointer-events-none absolute inset-0 z-10"
           xmlns="http://www.w3.org/2000/svg"
         >
           <motion.path
@@ -325,7 +317,10 @@ const CurvedScroller = ({
           >
             <AnimatePresence mode="popLayout" initial={false}>
               {controlsState !== "hidden" && (
-                <motion.span {...ViewMoreAni} key={`${controlsState}`}>
+                <motion.span
+                  {...viewMoreAnimation}
+                  key={controlsState}
+                >
                   {controlsState === "back-to-top"
                     ? "Back to top"
                     : "View more"}
@@ -333,6 +328,7 @@ const CurvedScroller = ({
               )}
             </AnimatePresence>
           </motion.button>
+
           <div
             ref={content}
             className={cn(
@@ -380,18 +376,20 @@ function throttle<T extends (...args: unknown[]) => void>(
 
   return function (...args: Parameters<T>) {
     if (timeoutId === null) {
-      // @ts-expect-error no types for this
+      // @ts-expect-error No types for this apply signature.
       func.apply(this, args);
       timeoutId = setTimeout(() => {
         if (lastArgs) {
-          // @ts-expect-error no types for this
+          // @ts-expect-error No types for this apply signature.
           func.apply(this, lastArgs);
           lastArgs = null;
         }
         timeoutId = null;
       }, delay);
-    } else lastArgs = args;
+    } else {
+      lastArgs = args;
+    }
   };
 }
 
-export default CurvedScroller;
+export default CurvedScrollbar;

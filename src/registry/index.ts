@@ -25,6 +25,7 @@ export enum COMPS {
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
   GOOEY_MENU = "gooey-menu",
+  CURVED_SCROLLBAR = "curved-scrollbar",
 
   // SPLASH_3D_BUTTON = "3d-splash-button",
   // NATIVE_SWIPEABLE_SHEETS = "native-swipeable-sheets",
@@ -78,6 +79,15 @@ export const COMP_DATA: Record<COMPS, IComp> = {
       demo: dynamic(() => import("@/registry/gooey-menu/demo")),
     },
   },
+
+  [COMPS.CURVED_SCROLLBAR]: {
+    slug: COMPS.CURVED_SCROLLBAR,
+    packages: ["motion", "tailwind-merge", "clsx"],
+    diaableSpeedToggle: true,
+    comp: {
+      demo: dynamic(() => import("@/registry/curved-scrollbar/demo")),
+    },
+  },
 };
 
 export const COMP_METADATA: Record<COMPS, CompMeta> = {
@@ -108,6 +118,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.GOOEY_MENU,
     title: "Gooey Menu",
     desc: "Simple Menu with svg gooey effect",
+  },
+  [COMPS.CURVED_SCROLLBAR]: {
+    slug: COMPS.CURVED_SCROLLBAR,
+    title: "Curved Scrollbar",
+    desc: "A framed scroll area with animated curved scrollbar tracks.",
   },
 };
 
