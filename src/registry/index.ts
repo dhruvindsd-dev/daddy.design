@@ -25,6 +25,7 @@ export enum COMPS {
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
   GOOEY_MENU = "gooey-menu",
+  APPLE_LIKE_DRAG_MORPH = "apple-like-drag-morph",
   CURVED_SCROLLBAR = "curved-scrollbar",
 
   // SPLASH_3D_BUTTON = "3d-splash-button",
@@ -80,6 +81,15 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     },
   },
 
+  [COMPS.APPLE_LIKE_DRAG_MORPH]: {
+    slug: COMPS.APPLE_LIKE_DRAG_MORPH,
+    packages: ["motion", "@use-gesture/react"],
+    diaableSpeedToggle: true,
+    comp: {
+      demo: dynamic(() => import("@/registry/apple-like-drag-morph/demo")),
+    },
+  },
+
   [COMPS.CURVED_SCROLLBAR]: {
     slug: COMPS.CURVED_SCROLLBAR,
     packages: ["motion", "tailwind-merge", "clsx"],
@@ -118,6 +128,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.GOOEY_MENU,
     title: "Gooey Menu",
     desc: "Simple Menu with svg gooey effect",
+  },
+  [COMPS.APPLE_LIKE_DRAG_MORPH]: {
+    slug: COMPS.APPLE_LIKE_DRAG_MORPH,
+    title: "Apple-like Drag Morph",
+    desc: "A draggable button that stretches and squishes with directional drag.",
   },
   [COMPS.CURVED_SCROLLBAR]: {
     slug: COMPS.CURVED_SCROLLBAR,

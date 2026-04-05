@@ -1,28 +1,50 @@
 "use client";
+
 import React from "react";
 import { useDrag } from "@use-gesture/react";
-import { useSpring, motion } from "motion/react";
-import Icon from "@/components/ui/icon";
+import { motion, useSpring } from "motion/react";
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
-const AppleLikeDragMorph: React.FC = () => {
+const DEFAULT_SPRING = {
+  stiffness: 520,
+  damping: 10,
+};
+
+export interface AppleLikeDragMorphProps {
+  className?: string;
+  children: React.ReactNode;
+  maxStretch?: number;
+  minScale?: number;
+  dragSensitivity?: number;
+  bounceStretch?: number;
+  bounceSquish?: number;
+  bounceDuration?: number;
+  springConfig?: {
+    stiffness?: number;
+    damping?: number;
+  };
+  onClick?: () => void;
+}
+
+const AppleLikeDragMorph = ({
+  className,
+  children ,
+  maxStretch = 1.5,
+  minScale = 0.2,
+  dragSensitivity = 0.003,
+  bounceStretch = 1.2,
+  bounceSquish = 0.9,
+  bounceDuration = 160,
+  springConfig,
+  onClick,
+}: AppleLikeDragMorphProps) => {
   const bounceTimeoutRef = React.useRef<number | null>(null);
   const isHorizontalBounceRef = React.useRef(true);
-  const scaleX = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const scaleY = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const maxStretch = 1.5;
-  const minScale = 0.2;
-  const dragSensitivity = 0.003;
+  const spring = { ...DEFAULT_SPRING, ...springConfig };
+  const scaleX = useSpring(1, spring);
+  const scaleY = useSpring(1, spring);
 
   const bind = useDrag(
     ({ active, movement: [mx, my] }) => {
@@ -68,19 +90,19 @@ const AppleLikeDragMorph: React.FC = () => {
     },
   );
 
-  const dragProps = bind() ?? {};
-
   function handleClick() {
+    onClick?.();
+
     if (bounceTimeoutRef.current) {
       window.clearTimeout(bounceTimeoutRef.current);
     }
 
     if (isHorizontalBounceRef.current) {
-      scaleX.set(1.2);
-      scaleY.set(0.9);
+      scaleX.set(bounceStretch);
+      scaleY.set(bounceSquish);
     } else {
-      scaleX.set(0.9);
-      scaleY.set(1.2);
+      scaleX.set(bounceSquish);
+      scaleY.set(bounceStretch);
     }
 
     isHorizontalBounceRef.current = !isHorizontalBounceRef.current;
@@ -89,7 +111,7 @@ const AppleLikeDragMorph: React.FC = () => {
       scaleX.set(1);
       scaleY.set(1);
       bounceTimeoutRef.current = null;
-    }, 160);
+    }, bounceDuration);
   }
 
   React.useEffect(() => {
@@ -101,26 +123,17 @@ const AppleLikeDragMorph: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex gap-10">
-      <div {...dragProps}>
-        <motion.div
-          onClick={handleClick}
-          style={{ scaleX, scaleY, borderRadius: 5000 }}
-          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
-        >
-          <Icon name="CIRCLE_ARROW_RIGHT" className="size-20 text-black/60" />
-        </motion.div>
-      </div>
+    <div {...bind()}>
+      <motion.button
+        type="button"
+        onClick={handleClick}
+        style={{ scaleX, scaleY, borderRadius: 9999 }}
+        className={`flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing ${className ?? ""}`}
+      >
+        {children}
+      </motion.button>
     </div>
   );
 };
 
-const TestPage = () => {
-  return (
-    <div className="bg-background flex h-screen w-screen items-center justify-center">
-      <AppleLikeDragMorph />
-    </div>
-  );
-};
-
-export default TestPage;
+export default AppleLikeDragMorph;
