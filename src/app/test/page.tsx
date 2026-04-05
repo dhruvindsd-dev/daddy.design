@@ -1,126 +1,63 @@
 "use client";
-import React from "react";
-import { useDrag } from "@use-gesture/react";
-import { useSpring, motion } from "motion/react";
-import Icon from "@/components/ui/icon";
+import CopyButton from "@/components/ui/copy-button";
+import { useState } from "react";
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, value));
+const Index = () => {
+  const [playing, setPlaying] = useState(false);
+  const [queuedReplay, setQueuedReplay] = useState(false);
 
-const AppleLikeDragMorph: React.FC = () => {
-  const bounceTimeoutRef = React.useRef<number | null>(null);
-  const isHorizontalBounceRef = React.useRef(true);
-  const scaleX = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const scaleY = useSpring(1, {
-    stiffness: 520,
-    damping: 10,
-  });
-
-  const maxStretch = 1.5;
-  const minScale = 0.2;
-  const dragSensitivity = 0.003;
-
-  const bind = useDrag(
-    ({ active, movement: [mx, my] }) => {
-      if (!active) {
-        scaleX.set(1);
-        scaleY.set(1);
-        return;
-      }
-
-      const absX = Math.abs(mx);
-      const absY = Math.abs(my);
-      const total = absX + absY;
-
-      if (total === 0) {
-        scaleX.set(1);
-        scaleY.set(1);
-        return;
-      }
-
-      const weightX = absX / total;
-      const weightY = absY / total;
-
-      const stretchX = clamp(1 + absX * dragSensitivity, 1, maxStretch);
-      const stretchY = clamp(1 + absY * dragSensitivity, 1, maxStretch);
-
-      const squishFromX = clamp(1 - 0.5 * (stretchX - 1), minScale, 1);
-      const squishFromY = clamp(1 - 0.5 * (stretchY - 1), minScale, 1);
-
-      const scaleXHorizontal = stretchX;
-      const scaleYHorizontal = squishFromX;
-
-      const scaleXVertical = squishFromY;
-      const scaleYVertical = stretchY;
-
-      const nextScaleX = scaleXHorizontal * weightX + scaleXVertical * weightY;
-      const nextScaleY = scaleYHorizontal * weightX + scaleYVertical * weightY;
-
-      scaleX.set(nextScaleX);
-      scaleY.set(nextScaleY);
-    },
-    {
-      filterTaps: true,
-    },
-  );
-
-  const dragProps = bind() ?? {};
-
-  function handleClick() {
-    if (bounceTimeoutRef.current) {
-      window.clearTimeout(bounceTimeoutRef.current);
+  const handleClick = () => {
+    if (playing) {
+      setQueuedReplay(true);
+      return;
     }
 
-    if (isHorizontalBounceRef.current) {
-      scaleX.set(1.2);
-      scaleY.set(0.9);
-    } else {
-      scaleX.set(0.9);
-      scaleY.set(1.2);
+    setPlaying(true);
+  };
+
+  const handleAnimationEnd = () => {
+    if (queuedReplay) {
+      setQueuedReplay(false);
+      setPlaying(false);
+      requestAnimationFrame(() => setPlaying(true));
+      return;
     }
 
-    isHorizontalBounceRef.current = !isHorizontalBounceRef.current;
-
-    bounceTimeoutRef.current = window.setTimeout(() => {
-      scaleX.set(1);
-      scaleY.set(1);
-      bounceTimeoutRef.current = null;
-    }, 160);
-  }
-
-  React.useEffect(() => {
-    return () => {
-      if (bounceTimeoutRef.current) {
-        window.clearTimeout(bounceTimeoutRef.current);
-      }
-    };
-  }, []);
+    setPlaying(false);
+  };
 
   return (
-    <div className="flex gap-10">
-      <div {...dragProps}>
-        <motion.div
-          onClick={handleClick}
-          style={{ scaleX, scaleY, borderRadius: 5000 }}
-          className="flex h-32 w-32 cursor-grab touch-none items-center justify-center bg-black/20 shadow-xl active:cursor-grabbing"
-        >
-          <Icon name="CIRCLE_ARROW_RIGHT" className="size-20 text-black/60" />
-        </motion.div>
+    <div
+      className="flex h-screen w-screen items-center justify-center"
+      onClick={handleClick}
+    >
+      <div className="relative flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="radial-mask relative h-full w-full">
+            <div
+              data-playing={playing}
+              onAnimationEnd={handleAnimationEnd}
+              className="ai-lights-gradient vertical-linear-mask absolute inset-0"
+              style={{
+                clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
+              }}
+            ></div>
+            <div
+              data-playing={playing}
+              className="ai-lights-gradient vertical-linear-mask absolute inset-0 scale-x-[-1]"
+              style={{
+                clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
+              }}
+            ></div>
+          </div>
+        </div>
+
+        <div className="relative z-100 flex h-30 w-100 items-center justify-center ">
+          {`${playing ? "Playing" : "Idle"}`}
+          <CopyButton />
+        </div>
       </div>
     </div>
   );
 };
-
-const TestPage = () => {
-  return (
-    <div className="bg-background flex h-screen w-screen items-center justify-center">
-      <AppleLikeDragMorph />
-    </div>
-  );
-};
-
-export default TestPage;
+export default Index;
