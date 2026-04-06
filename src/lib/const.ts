@@ -8,3 +8,6 @@ export const ROUTES = {
   comp: "/components",
   r: `${DOMAIN}/r`,
 };
+
+
+export const EASE_OUT_CUBIC: Easing = [0.22, 0.61, 0.36, 1];

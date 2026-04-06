@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./test.css";
 
 :root {
   /* --bg: #f0f0f0; */
