@@ -41,7 +41,7 @@
     transparent calc(var(--ripple-outer)),
     transparent 100%
   );
-  animation: ripple-gradient 380ms var(--ease-out-cubic) 1 both;
+  animation: ripple-gradient 532ms var(--ease-out-cubic) 1 both;
   z-index: 0;
 }
 
@@ -54,7 +54,7 @@
   }
 
   40% {
-    --peak-color: hsla(120 100% 25% / 0.16);
+    /* --peak-color: hsla(120 100% 25% / 0.6); */
   }
 
   100% {
