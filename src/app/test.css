@@ -16,83 +16,49 @@
   initial-value: 60%;
 }
 
+@property --peak-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: hsl(120 100% 25%);
+}
+
 .radial-gradient-animation {
   --ripple-inner: 10%;
   --ripple-peak: 30%;
   --ripple-outer: 60%;
+  --peak-color: hsl(120 100% 25%);
   height: 100%;
   width: 100%;
   border-radius: inherit;
-  background:
-    radial-gradient(
-      circle at center,
-      transparent 0%,
-      transparent var(--ripple-inner),
-      rgba(15, 23, 42, 0.06) calc(var(--ripple-inner) + 3%),
-      rgba(15, 23, 42, 0.16) calc(var(--ripple-inner) + 6%),
-      rgba(15, 23, 42, 0.5) calc(var(--ripple-peak) - 2%),
-      rgba(15, 23, 42, 0.8) var(--ripple-peak),
-      rgba(15, 23, 42, 0.42) calc(var(--ripple-peak) + 3%),
-      rgba(15, 23, 42, 0.14) calc(var(--ripple-outer) - 4%),
-      rgba(15, 23, 42, 0.04) calc(var(--ripple-outer) - 1%),
-      transparent var(--ripple-outer)
-    ),
-    radial-gradient(circle at center, rgba(15, 23, 42, 0.06) 0%, transparent 72%);
-  animation: ripple-gradient 2.8s steps(8, end) infinite;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    transparent var(--ripple-inner),
+    var(--peak-color) var(--ripple-peak),
+    transparent calc(var(--ripple-outer)),
+    transparent 100%
+  );
+  animation: ripple-gradient 2.8s var(--ease-out-cubic) infinite;
 }
 
 @keyframes ripple-gradient {
   0% {
-    --ripple-inner: 10%;
-    --ripple-peak: 30%;
-    --ripple-outer: 60%;
+    opacity: 0.2;
+    --ripple-inner: 0%;
+    --ripple-peak: 10%;
+    --ripple-outer: 20%;
+    --peak-color: hsl(120 100% 25%);
   }
 
-  12.5% {
-    --ripple-inner: 15%;
-    --ripple-peak: 35%;
-    --ripple-outer: 65%;
-  }
-
-  25% {
-    --ripple-inner: 20%;
-    --ripple-peak: 40%;
-    --ripple-outer: 70%;
-  }
-
-  37.5% {
-    --ripple-inner: 25%;
-    --ripple-peak: 45%;
-    --ripple-outer: 75%;
-  }
-
-  50% {
-    --ripple-inner: 30%;
-    --ripple-peak: 50%;
-    --ripple-outer: 80%;
-  }
-
-  62.5% {
-    --ripple-inner: 35%;
-    --ripple-peak: 55%;
-    --ripple-outer: 85%;
-  }
-
-  75% {
-    --ripple-inner: 40%;
-    --ripple-peak: 60%;
-    --ripple-outer: 90%;
-  }
-
-  87.5% {
-    --ripple-inner: 45%;
-    --ripple-peak: 65%;
-    --ripple-outer: 95%;
+  20% {
+    --peak-color: hsl(300 100% 25%);
   }
 
   100% {
+    --peak-color: hsl(120 100% 25%);
+    opacity: 0;
     --ripple-inner: 50%;
-    --ripple-peak: 70%;
+    --ripple-peak: 90%;
     --ripple-outer: 100%;
   }
 }
