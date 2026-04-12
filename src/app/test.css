@@ -19,14 +19,14 @@
 @property --peak-color {
   syntax: "<color>";
   inherits: false;
-  initial-value: hsl(120 100% 25%);
+  initial-value: hsla(120 100% 25% / 1);
 }
 
 .radial-gradient-animation {
   --ripple-inner: 10%;
   --ripple-peak: 30%;
   --ripple-outer: 60%;
-  --peak-color: hsl(120 100% 25%);
+  --peak-color: hsla(120 100% 25% / 1);
   height: 100%;
   width: 100%;
   border-radius: inherit;
@@ -38,27 +38,28 @@
     transparent calc(var(--ripple-outer)),
     transparent 100%
   );
-  animation: ripple-gradient 2.8s var(--ease-out-cubic) infinite;
+  animation: ripple-gradient 0.8s var(--ease-out-cubic) infinite;
+  z-index: 10;
 }
 
 @keyframes ripple-gradient {
   0% {
-    opacity: 0.2;
+    /* opacity: 0.2; */
     --ripple-inner: 0%;
     --ripple-peak: 10%;
     --ripple-outer: 20%;
-    --peak-color: hsl(120 100% 25%);
+    --peak-color: hsla(120 100% 25% / 0.2);
   }
 
   20% {
-    --peak-color: hsl(300 100% 25%);
+    /* --peak-color: hsla(120 100% 25% / 1); */
   }
 
   100% {
-    --peak-color: hsl(120 100% 25%);
-    opacity: 0;
+    --peak-color: hsla(120 100% 25% / 0);
+    /* opacity: 0; */
     --ripple-inner: 50%;
-    --ripple-peak: 90%;
-    --ripple-outer: 100%;
+    --ripple-peak: 100%;
+    --ripple-outer: 150%;
   }
 }
