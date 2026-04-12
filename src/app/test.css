@@ -23,43 +23,51 @@
 }
 
 .radial-gradient-animation {
-  --ripple-inner: 10%;
-  --ripple-peak: 30%;
-  --ripple-outer: 60%;
-  --peak-color: hsla(120 100% 25% / 1);
+  --ripple-inner: 0%;
+  --ripple-peak: 10%;
+  --ripple-outer: 20%;
+  --peak-color: hsla(120 100% 25% / 0.22);
+  position: absolute;
+  inset: 0;
   height: 100%;
   width: 100%;
   border-radius: inherit;
+  pointer-events: none;
   background: radial-gradient(
-    circle at center,
+    circle at 50% 0%,
     transparent 0%,
     transparent var(--ripple-inner),
     var(--peak-color) var(--ripple-peak),
     transparent calc(var(--ripple-outer)),
     transparent 100%
   );
-  animation: ripple-gradient 0.8s var(--ease-out-cubic) infinite;
-  z-index: 10;
+  animation: ripple-gradient 380ms var(--ease-out-cubic) 1 both;
+  z-index: 0;
 }
 
 @keyframes ripple-gradient {
   0% {
-    /* opacity: 0.2; */
     --ripple-inner: 0%;
     --ripple-peak: 10%;
     --ripple-outer: 20%;
     --peak-color: hsla(120 100% 25% / 0.2);
   }
 
-  20% {
-    /* --peak-color: hsla(120 100% 25% / 1); */
+  40% {
+    --peak-color: hsla(120 100% 25% / 0.16);
   }
 
   100% {
     --peak-color: hsla(120 100% 25% / 0);
-    /* opacity: 0; */
-    --ripple-inner: 50%;
-    --ripple-peak: 100%;
-    --ripple-outer: 150%;
+    --ripple-inner: 46%;
+    --ripple-peak: 82%;
+    --ripple-outer: 118%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radial-gradient-animation {
+    animation: none;
+    background: none;
   }
 }
