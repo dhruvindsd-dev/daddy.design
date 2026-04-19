@@ -21,6 +21,7 @@ export interface CompMeta {
 
 export enum COMPS {
   FAMILY_BUTTON = "family-button",
+  AI_ACTION_BUTTON = "ai-action-button",
   ANIMATED_BLUR_TESTIMONIALS = "animated-blur-testimonials",
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
@@ -44,6 +45,14 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     comp: {
       demo: dynamic(() => import("@/registry/family-button/demo")),
+    },
+  },
+  [COMPS.AI_ACTION_BUTTON]: {
+    slug: COMPS.AI_ACTION_BUTTON,
+    copyTargets: { demo: "demo-copy.tsx" },
+    packages: ["motion", "react-icons"],
+    comp: {
+      demo: dynamic(() => import("@/registry/ai-action-button/demo")),
     },
   },
   [COMPS.ANIMATED_BLUR_TESTIMONIALS]: {
@@ -105,6 +114,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.FAMILY_BUTTON,
     title: "Family status indicator",
     desc: "Family like dynamic status indicator",
+  },
+  [COMPS.AI_ACTION_BUTTON]: {
+    slug: COMPS.AI_ACTION_BUTTON,
+    title: "AI Action Button",
+    desc: "Animated AI call-to-action with light beams and state transitions.",
   },
   [COMPS.ANIMATED_BLUR_TESTIMONIALS]: {
     slug: COMPS.ANIMATED_BLUR_TESTIMONIALS,
