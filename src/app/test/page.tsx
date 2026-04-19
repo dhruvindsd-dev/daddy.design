@@ -1,6 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion, type MotionProps, useReducedMotion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  type MotionProps,
+  useReducedMotion,
+} from "motion/react";
 import { useState } from "react";
 
 type CardId = 1 | 2 | 3;
@@ -58,7 +63,7 @@ const Index = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-10 bg-gray-100 px-6">
-      <div className="relative size-[400px] overflow-hidden rounded-[24px] bg-white leading-[1.6] font-medium ">
+      <div className="relative size-[400px] overflow-hidden rounded-[24px] bg-white leading-[1.6] font-medium">
         <AnimatePresence initial={false} mode="popLayout">
           <motion.article
             {...ANI}
@@ -92,15 +97,15 @@ const Index = () => {
 
             <div className="relative z-[1] flex h-full flex-col justify-between p-6">
               <div className="space-y-3">
-                <p className="text-xs uppercase tracking-[0.26em] text-black/30">
+                <p className="text-xs tracking-[0.26em] text-black/30 uppercase">
                   {card.label}
                 </p>
-                <p className="max-w-[32ch] text-balance text-[15px] text-black/50">
+                <p className="max-w-[32ch] text-[15px] text-balance text-black/50">
                   {card.body}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-black/22">
+              <div className="flex items-center justify-between text-[11px] font-semibold tracking-[0.22em] text-black/22 uppercase">
                 <span>Card {state}</span>
                 <span>Transition-linked ripple</span>
               </div>
