@@ -26,13 +26,13 @@ export enum COMPS {
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
   GOOEY_MENU = "gooey-menu",
+  SHARED_LAYOUT_TABS = "shared-layout-tabs",
   APPLE_LIKE_DRAG_MORPH = "apple-like-drag-morph",
   CURVED_SCROLLBAR = "curved-scrollbar",
 
   // SPLASH_3D_BUTTON = "3d-splash-button",
   // NATIVE_SWIPEABLE_SHEETS = "native-swipeable-sheets",
   // SUB_SELECT_TOGGLE = "sub-select-toggle",
-  // SHARED_LAYOUT_TABS = "shared-layout-tabs",
   // APPLE_WATCH_USERS_ANIMATION = "apple-watch-users-animation",
 }
 
@@ -90,6 +90,15 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     },
   },
 
+  [COMPS.SHARED_LAYOUT_TABS]: {
+    slug: COMPS.SHARED_LAYOUT_TABS,
+    copyTargets: { demo: "demo-copy.tsx" },
+    packages: ["motion", "tailwind-merge", "clsx"],
+    comp: {
+      demo: dynamic(() => import("@/registry/shared-layout-tabs/demo")),
+    },
+  },
+
   [COMPS.APPLE_LIKE_DRAG_MORPH]: {
     slug: COMPS.APPLE_LIKE_DRAG_MORPH,
     packages: ["motion", "@use-gesture/react"],
@@ -142,6 +151,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.GOOEY_MENU,
     title: "Gooey Menu",
     desc: "Simple Menu with svg gooey effect",
+  },
+  [COMPS.SHARED_LAYOUT_TABS]: {
+    slug: COMPS.SHARED_LAYOUT_TABS,
+    title: "Shared Layout Tabs",
+    desc: "A collectible gallery that morphs between list, card, and stacked pack layouts.",
   },
   [COMPS.APPLE_LIKE_DRAG_MORPH]: {
     slug: COMPS.APPLE_LIKE_DRAG_MORPH,
