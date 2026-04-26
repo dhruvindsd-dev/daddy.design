@@ -29,6 +29,7 @@ export enum COMPS {
   SHARED_LAYOUT_TABS = "shared-layout-tabs",
   APPLE_LIKE_DRAG_MORPH = "apple-like-drag-morph",
   CURVED_SCROLLBAR = "curved-scrollbar",
+  DRAGGABLE_DRIFTING_AVATARS = "draggable-drifting-avatars",
 
   // SPLASH_3D_BUTTON = "3d-splash-button",
   // NATIVE_SWIPEABLE_SHEETS = "native-swipeable-sheets",
@@ -116,6 +117,14 @@ export const COMP_DATA: Record<COMPS, IComp> = {
       demo: dynamic(() => import("@/registry/curved-scrollbar/demo")),
     },
   },
+  [COMPS.DRAGGABLE_DRIFTING_AVATARS]: {
+    slug: COMPS.DRAGGABLE_DRIFTING_AVATARS,
+    packages: ["dialkit"],
+    diaableSpeedToggle: true,
+    comp: {
+      demo: dynamic(() => import("@/registry/draggable-drifting-avatars/demo")),
+    },
+  },
 };
 
 export const COMP_METADATA: Record<COMPS, CompMeta> = {
@@ -166,6 +175,11 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.CURVED_SCROLLBAR,
     title: "Curved Scrollbar",
     desc: "A framed scroll area with animated curved scrollbar tracks.",
+  },
+  [COMPS.DRAGGABLE_DRIFTING_AVATARS]: {
+    slug: COMPS.DRAGGABLE_DRIFTING_AVATARS,
+    title: "Draggable Drifting Avatars",
+    desc: "An infinite draggable canvas of community avatars.",
   },
 };
 

@@ -91,7 +91,7 @@ const DynamicScrollIslandTocDemo = () => {
             ref={ref}
             transition={{
               type: "spring",
-              bounce: 0,
+              bounce: 0.3,
               duration: 0.6 * duration,
             }}
           />

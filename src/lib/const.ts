@@ -1,3 +1,5 @@
+import { Easing } from "motion/react";
+
 export const X_LINK = "https://x.com/writenicecode";
 
 export const IS_CLIENT = typeof window !== "undefined";

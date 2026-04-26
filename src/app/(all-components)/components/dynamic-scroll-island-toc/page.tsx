@@ -12,21 +12,57 @@ const Index = () => {
 
       <ComponentContent
         component={COMPS.DYNAMIC_SCROLL_ISLAND}
-        attibution="Inspired and Designed by Rauno's website"
+        attibution="Heavily inspired by Nitish Khagwal. "
         propsTableData={[
           {
-            name: "todos",
-            type: "{ id: number; title: string; checked: boolean }[]",
+            name: "data",
+            type: "TOC_INTERFACE[]",
             default_value: "required",
             description:
-              "List of todo items controlling checkbox state, labels, and animations.",
+              "Items rendered in the expandable table of contents menu.",
+            type_info: "`{ name: string; value?: string }`",
           },
           {
-            name: "onToggle",
-            type: "(id: number) => void",
-            default_value: "required",
+            name: "value",
+            type: "TOC_INTERFACE",
+            default_value: "-",
             description:
-              "Callback invoked when a todo checkbox is clicked, passing the todo id.",
+              "Controlled active item shown in the island title and used to toggle the clear state.",
+            type_info: "`{ name: string; value?: string }`",
+          },
+          {
+            name: "setValue",
+            type: "(value: TOC_INTERFACE) => void",
+            default_value: "-",
+            description:
+              "Callback fired when a table of contents item or the clear button is selected.",
+          },
+          {
+            name: "ref",
+            type: "RefObject<HTMLElement | null>",
+            default_value: "-",
+            description:
+              "Optional scroll container ref used to calculate progress instead of the window.",
+          },
+          {
+            name: "transition",
+            type: "Transition (from motion/react)",
+            default_value: '{ type: "spring", duration: 0.5, bounce: 0.1 }',
+            description:
+              "Shared motion transition applied to the island layout animations.",
+          },
+          {
+            name: "className",
+            type: "string",
+            default_value: "-",
+            description: "Additional classes applied to the root island wrapper.",
+          },
+          {
+            name: "lPrefix",
+            type: "string",
+            default_value: "-",
+            description:
+              "Optional prefix for internal layout ids when rendering multiple islands on the same page.",
           },
         ]}
       />
