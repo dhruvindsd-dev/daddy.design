@@ -26,6 +26,8 @@ export enum COMPS {
   COOL_CHECKBOX = "cool-checkbox",
   DYNAMIC_SCROLL_ISLAND = "dynamic-scroll-island-toc",
   GOOEY_MENU = "gooey-menu",
+  BOING_BOING_MENU = "boing-boing-menu",
+  BOING_BOING_TABS = "boing-boing-tabs",
   SHARED_LAYOUT_TABS = "shared-layout-tabs",
   APPLE_LIKE_DRAG_MORPH = "apple-like-drag-morph",
   CURVED_SCROLLBAR = "curved-scrollbar",
@@ -79,7 +81,9 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     packages: ["motion", "tailwind-merge", "clsx"],
     comp: {
       demo: dynamic(() => import("@/registry/dynamic-scroll-island-toc/demo")),
-      random: dynamic(() => import("@/registry/dynamic-scroll-island-toc/random")),
+      random: dynamic(
+        () => import("@/registry/dynamic-scroll-island-toc/random"),
+      ),
     },
   },
 
@@ -88,6 +92,22 @@ export const COMP_DATA: Record<COMPS, IComp> = {
     packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
     comp: {
       demo: dynamic(() => import("@/registry/gooey-menu/demo")),
+    },
+  },
+
+  [COMPS.BOING_BOING_MENU]: {
+    slug: COMPS.BOING_BOING_MENU,
+    packages: ["motion", "tailwind-merge", "clsx", "react-icons"],
+    comp: {
+      demo: dynamic(() => import("@/registry/boing-boing-menu/demo")),
+    },
+  },
+
+  [COMPS.BOING_BOING_TABS]: {
+    slug: COMPS.BOING_BOING_TABS,
+    packages: ["motion", "class-variance-authority", "tailwind-merge", "clsx"],
+    comp: {
+      demo: dynamic(() => import("@/registry/boing-boing-tabs/demo")),
     },
   },
 
@@ -160,6 +180,16 @@ export const COMP_METADATA: Record<COMPS, CompMeta> = {
     slug: COMPS.GOOEY_MENU,
     title: "Gooey Menu",
     desc: "Simple Menu with svg gooey effect",
+  },
+  [COMPS.BOING_BOING_MENU]: {
+    slug: COMPS.BOING_BOING_MENU,
+    title: "Boing Boing Menu",
+    desc: "A bouncy icon menu with elastic tooltips and copy feedback.",
+  },
+  [COMPS.BOING_BOING_TABS]: {
+    slug: COMPS.BOING_BOING_TABS,
+    title: "Boing Boing Tabs",
+    desc: "Elastic segmented tabs with a clipped active pill and hover nudge.",
   },
   [COMPS.SHARED_LAYOUT_TABS]: {
     slug: COMPS.SHARED_LAYOUT_TABS,
